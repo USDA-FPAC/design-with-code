@@ -1,0 +1,12 @@
+.sass-cache
+.DS_Store
+.env
+npm-debug.log
+yarn-error.log
+Thumbs.db
+node_modules/
+dist/
+scratch.html
+config/
+.editorconfig
+package-lock.json
