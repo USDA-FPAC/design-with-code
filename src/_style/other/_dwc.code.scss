@@ -7,20 +7,22 @@
 
 .dwc-editor {
   
-  margin-top: $size-medium;
-  //border: 1px solid $color-fds-tertiary-900;
+  
+  border: 1px solid $color-fds-tertiary-900;
   padding: 0;
-  padding-left: $size-medium;
+  
   background-color: $color-fds-tertiary-900;
   height: 90vh;
-  overflow: scroll;
+  overflow: hidden;
 
   &-header {
+    padding-left: $size-medium;
     font-size: $size-medium;
     color: $color-fds-tertiary-100;
   }
 
   &-editor-code {
+    padding-left: $size-medium;
     //color: $color-fds-tertiary-100;
     width: 100%;
     height: 100%;
@@ -31,20 +33,20 @@
   }
 
   &-canvas {
+    padding-left: $size-medium;
     padding-right: $size-medium;
   }
 }
 
-/* .ce-rawtool__textarea {
-  min-height: 200px;
-  resize: none;
-  border-radius: 0px;
-  border: 0;
-  background-color: #1e2128;
-  font-family: Menlo, Monaco, Consolas, Courier New, monospace;
-  font-size: 12px;
-  line-height: 1.6;
-  letter-spacing: -0.2px;
-  color: #a1a7b6;
-  overscroll-behavior: contain;
-} */
+.dwc-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}

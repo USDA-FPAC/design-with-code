@@ -8,6 +8,7 @@
     
             <div class="dwc-preview fds-box fds-p--none fds-box--bg-100">
               <iframe
+                :id="iFrameId"
                 :srcDoc="sourceDoc"
                 title="output"
                 sandbox="allow-scripts"
@@ -18,9 +19,14 @@
             </div>
     
           </div>
-          <div class="fds-grid__1/1 fds-grid__1/4@l ">
-          
-            <editor EDITOR_TITLE="HTML Editor" @emitOnUpdate="updateHtmlCode" />
+          <div class="fds-grid__1/1 fds-grid__1/4@l fds-p-t--m">
+
+                     
+            <editor EDITOR_TITLE="Tools"
+              @emitOnUpdate="updateHtmlCode"
+              @emitOnUndo="undo"
+              @emitOnRedo="redo"
+            />
           
           </div>
         </div>
@@ -34,7 +40,7 @@ import { defineAsyncComponent, ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useNavigation } from "@/_composables/useNavigation";
 import { v4 as uuidv4 } from "uuid";
-import { useDesignSystemStyle } from "@/_composables/useDesignSystemStyle";
+import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSystemStyle";
 
 const baseHeader = defineAsyncComponent(() => import("@/_partials/BaseHeader.vue"));
 const editor = defineAsyncComponent(() => import("@/_components/editor/editor.vue"));
@@ -49,9 +55,10 @@ export default {
     const baseUrl = ref(import.meta.env.BASE_URL);
     const store = useStore();
     const { goto } = useNavigation();
-    const { updateSource } = useDesignSystemStyle();
+    const { updateSource, listenToFrame } = useDesignSystemStyle();
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
+    const iFrameId= ref(uuidv4());
 
     const dynamicHtml = computed(()=>{
 
@@ -65,18 +72,25 @@ export default {
 
     let sourceDoc = ref();
 
-    const setSourceDoc = (_html) => {
-      sourceDoc.value = _html;
+    const setSourceDoc = (_data) => {
+      sourceDoc.value = _data.app;
+    }
+
+    const undo = () => {
+      setSourceDoc(updateSource({cmd:'undo'}, ''));
+    }
+
+    const undoVersion = (_version) => {
+      setSourceDoc(updateSource({cmd:'undo', data:_version}, ''));
+    }
+
+    const redo = () => {
+      setSourceDoc(updateSource({cmd:'redo'}, ''));
     }
 
     const updateHtmlCode = (_data) => {
       //console.log('updateHtmlCode',_data)
-      setSourceDoc(updateSource('body',_data));
-    }
-
-    const updateCssCode = (_data) => {
-      //console.log('updateCssCode',_data)
-      setSourceDoc(updateSource('body',_data));
+      setSourceDoc(updateSource({cmd:'app', data:''}, _data));
     }
 
     watch([dynamicHtml, dynamicCss], (value1, value2) => {
@@ -85,7 +99,8 @@ export default {
     });
 
     onMounted(()=>{
-      setSourceDoc(updateSource('', '', true))
+      listenToFrame(iFrameId.value);
+      setSourceDoc(updateSource('', '', true));
     });
 
     return {
@@ -94,7 +109,10 @@ export default {
       sourceDoc,
       editorsId,
       canvasId,
-      updateHtmlCode
+      iFrameId,
+      updateHtmlCode,
+      undo,
+      redo
     };
   }
 };

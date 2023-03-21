@@ -1,0 +1,5 @@
+.dwc-overlay:hover {
+  z-index: 999;
+  cursor: grab;
+  outline: 5px solid #008CBA;
+}
