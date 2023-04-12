@@ -22,7 +22,7 @@
           <div class="fds-grid__1/1 fds-grid__1/4@l fds-p-t--m">
 
                      
-            <editor EDITOR_TITLE="Tools"
+            <editor EDITOR_TITLE="Editor"
               @emitOnUpdate="updateHtmlCode"
               @emitOnUndo="undo"
               @emitOnRedo="redo"
@@ -43,7 +43,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSystemStyle";
 
 const baseHeader = defineAsyncComponent(() => import("@/_partials/BaseHeader.vue"));
-const editor = defineAsyncComponent(() => import("@/_components/editor/editor.vue"));
+const editor = defineAsyncComponent(() => import("@/Design/_views/Editor/Base.vue"));
 
 export default {
   components: {
@@ -59,16 +59,6 @@ export default {
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
-
-    const dynamicHtml = computed(()=>{
-
-    });
-    const dynamicCss = computed(()=>{
-      
-    })
-
-    const htmlCode = ref();
-    const cssCode = ref();
 
     let sourceDoc = ref();
 
@@ -90,13 +80,12 @@ export default {
 
     const updateHtmlCode = (_data) => {
       //console.log('updateHtmlCode',_data)
-      setSourceDoc(updateSource({cmd:'app', data:''}, _data));
+      setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
-    watch([dynamicHtml, dynamicCss], (value1, value2) => {
+    /* watch(dynamicHtml, (value1) => {
       htmlCode.value = value1;
-      cssCode.value = value2;
-    });
+    }); */
 
     onMounted(()=>{
       listenToFrame(iFrameId.value);
