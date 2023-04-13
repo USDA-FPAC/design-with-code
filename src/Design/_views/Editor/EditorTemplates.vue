@@ -3,17 +3,24 @@
     
     <div class="dwc-editor-canvas">
       <!-- Add markup here to show Multiple Layouts -->
-      <p>Select from these fine Templates:</p>
-      <button
-        @click="updateTemplate(
-          {
-            name:'stepped-process',
-            data:{ type: 'array', arr: ['123','456','789'] }
-          }
-        )"
-        class="fds-btn fds-btn--secondary">
-        Add Template
-      </button>
+      <p class="fds-m-t--s">
+        <button
+          @click="updateTemplate(
+            { name:'default' }
+          )"
+          class="fds-btn fds-btn--secondary">
+          Use Default Template
+        </button>
+      </p>
+      <p class="fds-m-t--s">
+        <button
+          @click="updateTemplate(
+            { name:'fullscreen' }
+          )"
+          class="fds-btn fds-btn--secondary">
+          Use Fullscreen Template
+        </button>
+      </p>
     </div>
 
   </div>
@@ -39,7 +46,7 @@ export default {
       updateCanvas(
         {
           action: 'onTemplateUpdate',
-          details: { name: _obj.name, data: _obj.data }
+          details: { name: _obj.name }
         }
       )
     }

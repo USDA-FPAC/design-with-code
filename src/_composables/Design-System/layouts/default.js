@@ -1,4 +1,4 @@
- export function useBody(_projectLocation=null){
+export function useDefaultLayout(_projectLocation=null){
   let mainTop = `
   <main id="main-content" tabindex="-1">
     <div class="fsa-section">
@@ -51,8 +51,6 @@
     </div>
   </div>`;
 
-  let bodyInit = `<div id="main-app-area" class="dwc-overlay fsa-box fsa-text-align--center fsa-border--tertiary-300 fsa-m-t--l" style="height: 200px">Your App Here</div>`;
-
   let steppedControls = `<!-- Stepped Control -->
   <div class="dwc-overlay fsa-stepped-control" id="stepped-controls">
     <div class="fsa-stepped-control__bd">
@@ -80,27 +78,11 @@
     </div>
   </main>`;
 
-  let frameScripts = `<script>
-  window.addEventListener('load',()=>{ window.top.postMessage('handshake', '${_projectLocation}') });
-  window.addEventListener('message',(_evt)=>{ console.log('message from Parent',_evt.data) });
-  let clickAreas = document.querySelectorAll('.dwc-overlay');
-  clickAreas.forEach( item => {
-    item.addEventListener('click', (_e) => {
-      _e.preventDefault();
-      _e.stopPropagation();
-      let el = _e.currentTarget;
-      window.top.postMessage(el.id, '${_projectLocation}');
-    });
-  });
-  </script>`;
-
   return {
     mainTop,
     steppedTabs,
     headerArea,
-    bodyInit,
     steppedControls,
-    mainBottom,
-    frameScripts
+    mainBottom
   }
  }

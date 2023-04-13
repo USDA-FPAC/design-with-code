@@ -4,7 +4,7 @@
       <div class="fds-section__bd">
 
         <div class="fds-grid fds-grid--no-gutter">
-          <div class="fds-grid__1/1 fds-grid__3/4@l ">
+          <div class="fds-grid__1/1 fds-grid__10/12@l ">
     
             <div class="dwc-preview fds-box fds-p--none fds-box--bg-100">
               <iframe
@@ -19,10 +19,9 @@
             </div>
     
           </div>
-          <div class="fds-grid__1/1 fds-grid__1/4@l fds-p-t--m">
-
+          <div class="fds-grid__1/1 fds-grid__2/12@l fds-p-t--m">
                      
-            <editor EDITOR_TITLE="Editor"
+            <editor EDITOR_TITLE=""
               @emitOnUpdate="updateHtmlCode"
               @emitOnUndo="undo"
               @emitOnRedo="redo"

@@ -1,11 +1,15 @@
 import { useUtilities } from "@/_composables/useUtilities";
 import { useTop } from '@/_composables/Design-System/page-areas/top';
 import { useBody } from "@/_composables/Design-System/page-areas/body";
+import { useTemplates } from "./layouts/useTemplates";
+import { useComponents } from "./components/useComponents";
 
 const { checkOnProd } = useUtilities();
 const projectLocation = checkOnProd() ? 'https://usda-fpac.github.io' : 'http://localhost:3000';
-const { top, headerApp, globalNav } = useTop(projectLocation);
-const { mainTop, steppedTabs, headerArea, steppedControls, mainBottom } = useBody(projectLocation);
+const { getTop, getHeaderApp, getGlobalNav } = useTop(projectLocation);
+const { mainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom, frameScripts } = useBody(projectLocation);
+const { getTemplate } = useTemplates(projectLocation);
+const { getComponent } = useComponents(projectLocation);
 
 export function useDesignSystemStyle() {
   
@@ -14,26 +18,24 @@ export function useDesignSystemStyle() {
   let version = 0;
   let allowComms = false;
   let selectedPanelId = '';
+  let globalNav = [
+    { label:'Home', path:'/', isActive:'true' },
+    { label:'Solutions', path:'/solutions', isActive:'false' },
+    { label:'Objectives', path:'/objectives', isActive:'false' },
+    { label:'Reports', path:'/reports', isActive:'false' },
+  ];
+  let programData = {
+    programAbbr:'NPS',
+    programName:'National Payment System',
+    navMenu: globalNav,
+    css: 'https://usda-fsa.github.io/fsa-style/css/fsa-style.min.css',
+    layout: 'default'
+  };
 
-  let bodyInit = `<div id="main-app-area" class="dwc-overlay fsa-box fsa-text-align--center fsa-border--tertiary-300 fsa-m-t--l" style="height: 200px">Your App Here</div>`;
-
-  const frameScripts = `<script>
-  window.addEventListener('load',()=>{ window.top.postMessage('handshake', '${projectLocation}') });
-  window.addEventListener('message',(_evt)=>{ console.log('message from Parent',_evt.data) });
-  let clickAreas = document.querySelectorAll('.dwc-overlay');
-  clickAreas.forEach( item => {
-    item.addEventListener('click', (_e) => {
-      _e.preventDefault();
-      _e.stopPropagation();
-      let el = _e.currentTarget;
-      window.top.postMessage(el.id, '${projectLocation}');
-    });
-  });
-  </script>`;
 
   const panels = {};
-  panels['header-app'] = headerApp;
-  panels['global-nav'] = globalNav;
+  panels['header-app'] = getHeaderApp;
+  panels['global-nav'] = getGlobalNav;
   panels['stepped-tabs'] = steppedTabs;
   panels['page-header'] = headerArea;
   panels['main-app-area'] = bodyInit;
@@ -46,19 +48,9 @@ export function useDesignSystemStyle() {
     });
   }
 
-  const handleComms = (_id, _frameId=null) => {
-    console.log('APP SHOULD UPDATE: ', _id);
-
+  const handleComms = (_id, _frameId=null) => { 
+    console.log('panel selected :: ', _id)
     selectedPanelId = _id;
-
-    //let childWindow = document.getElementById(_frameId);
-    //console.log('childWindow',childWindow.contentWindow)
-
-  }
-
-  const updateApp = (_id) => {
-    //allHtml[_id] = ''
-
   }
 
   const setHistory = (_app, _v=null) => {
@@ -79,32 +71,6 @@ export function useDesignSystemStyle() {
     return setHistory(state.app, v);
   }
 
-  const getComponent =(_name, _data) => {
-    let component = ``;
-    if(_name=='button-group'){
-      
-      component += `<span class="fsa-btn-group" role="group" aria-label="Label describing this group">`;
-      if(_data.type == 'array') _data.arr.forEach(item => component += `<button class="fsa-btn-group__item" type="button">${item.label}</button>` );
-      component += `</span>`
-      
-      let holder = `<button class="fsa-btn-group__item" type="button">Label</button>
-        <button class="fsa-btn-group__item fsa-btn-group__item--active" aria-selected="true" type="button">Active Label</button>
-        <button class="fsa-btn-group__item" type="button">Label</button>
-        <button class="fsa-btn-group__item" type="button">Label</button>
-      </span>`
-      
-    }
-    if(_name=='radio-group'){
-      component += `<div class="fsa-field"><label class="fsa-field__label" id="radiogroupid">${_data.prompt}</label><ul class="fsa-form-list" aria-labelledby="radiogroupid">`;
-      
-        if(_data.type == 'array') _data.arr.forEach(item => {
-          component += `<li><span><input class="fsa-radio" id="${item.id}" type="radio" name="rdogrp"><label for="${item.id}">${item.label}</label></span></li>` 
-        });
-        component += `</ul><span class="fsa-field__help" id="radiogroupid-help">${_data.help}</span></div>`;
-    }
-    return component;
-  }
-
   const updateCanvas = (_payload) => {
 
     let action = _payload.action;
@@ -117,30 +83,40 @@ export function useDesignSystemStyle() {
       console.log('updateCanvas Error: ', _err)
     }
 
-
     if( action == "onTemplateUpdate") {
-
+      programData.layout = name;
+      allHtml = getTemplate( programData );
     }
 
-    if( action == "onComponentUpdate"){
-      let component = getComponent(name, data);
-      panels[selectedPanelId] = component;
-      allHtml = top + panels['header-app'] + mainTop + panels['stepped-tabs'] + panels['page-header'];
-      allHtml += panels['main-app-area'] + panels['stepped-controls'] + mainBottom + frameScripts;
-    }
+    if( action == "onComponentUpdate") allHtml = rebuildCanvas( getComponent(name, data) );
 
     if( action == "onCodeUpdate"){
-      let bodyArea = ``;
-      allHtml = top + headerApp + mainTop + steppedTabs + headerArea;
+      let code = ``;
+      //allHtml = getTop({css:globalCss}) + getHeaderApp() + mainTop + steppedTabs + headerArea;
       data.forEach(block => {
         let data = block.data;
-        if(block.type=='paragraph') bodyArea += data.text;
-        if(block.type=='code') bodyArea += data.text;
-        if(block.type=='rawHtml') bodyArea += data.html;
+        if(block.type=='paragraph') code += data.text;
+        if(block.type=='code') code += data.text;
+        if(block.type=='rawHtml') code += data.html;
       });
-      allHtml += bodyArea + steppedControls + mainBottom + frameScripts;
+      //allHtml += bodyArea + steppedControls + mainBottom + frameScripts;
+      allHtml = rebuildCanvas( code );
     }
     
+    return allHtml;
+  };
+
+  const rebuildCanvas = (_code) => {
+    panels[selectedPanelId] = _code;
+    allHtml = getTop( { css: programData.css } );
+    allHtml += panels['header-app']( programData );
+    allHtml += mainTop;
+    allHtml += panels['stepped-tabs'];
+    allHtml += panels['page-header'];
+    allHtml += panels['main-app-area'];
+    allHtml += panels['stepped-controls'];
+    allHtml += mainBottom;
+    allHtml += frameScripts;
     return allHtml
   }
 

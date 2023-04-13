@@ -1,9 +1,9 @@
 <template>
   <div class="dwc-editor">
-    <div class="fds-level fds-level--justify-between fds-m-b--m fds-m-t--s fds-m-r--s">
-      <p class="dwc-editor-header">{{ EDITOR_TITLE }}</p>
+    <div class="fds-m-b--m fds-m-t--s fds-m-r--s">
+      <!-- <p class="dwc-editor-header">{{ EDITOR_TITLE }}</p> -->
       
-      <span>
+      <span class="fds-m-l--s">
         <button @click="saveCode()" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
           <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
@@ -26,31 +26,33 @@
 
     <content-tabs
       :TABS_DATA="tabsData"
-      TABS_CLASS="fds-content-tabs--justified-equal"
+      TABS_CLASS="fds-content-tabs--justified-equal fds-border--primary-300"
       TABS_CONTAINER_CLASS="fds-m-t--none"
       @emitTabSelection="handleTabSelected">
-              
+        
       <template v-slot:containers>
+        <div class="fds-m-t--m">
 
-        <editor-templates
-          :CONTAINER_ID="templatesContainerId + '-container'"
-          CONTAINER_CLASS=""
-          @emitEditorAction="updateCanvas">
-        </editor-templates>
-        
-        <editor-ui
-          :CONTAINER_ID="uiContainerId + '-container'"
-          CONTAINER_CLASS=""
-          @emitEditorAction="updateCanvas">
-        </editor-ui>
+<!--           <editor-templates
+            :CONTAINER_ID="templatesContainerId + '-container'"
+            CONTAINER_CLASS=""
+            @emitEditorAction="updateCanvas">
+          </editor-templates> -->
+          
+          <editor-ui
+            :CONTAINER_ID="uiContainerId + '-container'"
+            CONTAINER_CLASS=""
+            @emitEditorAction="updateCanvas">
+          </editor-ui>
 
-        <editor-code
-          :CONTAINER_ID="codeContainerId + '-container'"
-          CONTAINER_CLASS=""
-          @emitEditorAction="updateCanvas"
-          @interface="getChildInterface">
-        </editor-code>
-        
+          <editor-code
+            :CONTAINER_ID="codeContainerId + '-container'"
+            CONTAINER_CLASS=""
+            @emitEditorAction="updateCanvas"
+            @interface="getChildInterface">
+          </editor-code>
+
+        </div>
       </template>
 
     </content-tabs>
@@ -91,7 +93,7 @@ export default {
     const codeContainerRef = ref(null);
 
     const tabsData = ref([
-      {
+      /* {
         id: templatesContainerId.value,
         label: 'Templates',
         iconSize: '2',
@@ -99,14 +101,14 @@ export default {
         iconFillHex: '#494440',
         isSelected: true,
         containerId: templatesContainerId.value +'-container'
-      },
+      }, */
       {
         id: uiContainerId.value,
         label: 'UI',
         iconSize: '2',
         iconPath: 'M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z',
         iconFillHex: '#494440',
-        isSelected: false,
+        isSelected: true,
         containerId: uiContainerId.value +'-container'
       },      
       {
