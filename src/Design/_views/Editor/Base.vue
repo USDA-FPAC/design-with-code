@@ -32,7 +32,6 @@
         
       <template v-slot:containers>
         <div class="fds-m-t--m">
-
 <!--           <editor-templates
             :CONTAINER_ID="templatesContainerId + '-container'"
             CONTAINER_CLASS=""

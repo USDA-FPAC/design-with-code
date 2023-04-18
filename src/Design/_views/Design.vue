@@ -22,7 +22,7 @@
           <div class="fds-grid__1/1 fds-grid__2/12@l fds-p-t--m">
                      
             <editor EDITOR_TITLE=""
-              @emitOnUpdate="updateHtmlCode"
+              @emitOnUpdate="handleUpdateCanvas"
               @emitOnUndo="undo"
               @emitOnRedo="redo"
             />
@@ -31,6 +31,15 @@
         </div>
       </div>
     </div>
+
+    <component-modal
+      :MODAL_ID="componentModalId"
+      CLASSES="fds-modal--top"
+      TITLE="Add Properties"
+      :NAME="componentName"
+      @emitAddComponent="handleAddComponent"
+    >
+    </component-modal>
 </main>
 </template>
 
@@ -38,16 +47,20 @@
 import { defineAsyncComponent, ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useNavigation } from "@/_composables/useNavigation";
+import { useModalControls } from '@/_composables/useModalControls';
 import { v4 as uuidv4 } from "uuid";
 import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSystemStyle";
 
 const baseHeader = defineAsyncComponent(() => import("@/_partials/BaseHeader.vue"));
 const editor = defineAsyncComponent(() => import("@/Design/_views/Editor/Base.vue"));
+const componentModal = defineAsyncComponent(() => import('@/Design/_views/ComponentModal.vue'));
+
 
 export default {
   components: {
     baseHeader,
-    editor
+    editor,
+    componentModal
   },
 
   setup(props, {emit}) {
@@ -58,6 +71,14 @@ export default {
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
+    const {
+      setModalId,
+      showModal,
+      hideModal
+    } = useModalControls();
+    const componentModalId = ref( uuidv4() );
+    setModalId(componentModalId.value);
+    const componentName = ref();
 
     let sourceDoc = ref();
 
@@ -77,8 +98,16 @@ export default {
       setSourceDoc(updateSource({cmd:'redo'}, ''));
     }
 
-    const updateHtmlCode = (_data) => {
+    const handleUpdateCanvas = (_data) => {
       //console.log('updateHtmlCode',_data)
+      // if component show modal
+      componentName.value = _data.details.name;
+      showModal(componentModalId.value);
+
+      //setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+    }
+
+    const handleAddComponent = (_data) => {
       setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
@@ -98,9 +127,12 @@ export default {
       editorsId,
       canvasId,
       iFrameId,
-      updateHtmlCode,
+      handleUpdateCanvas,
       undo,
-      redo
+      redo,
+      componentModalId,
+      handleAddComponent,
+      componentName
     };
   }
 };

@@ -6,6 +6,13 @@
       <p>Search for a Component:</p>
       <p>
         <button
+          @click="updateUI({ name:'button' })"
+          class="fds-btn fds-btn--secondary">
+          Add Button
+        </button>
+      </p>
+      <p>
+        <button
           @click="updateUI(
             {
               name:'button-group',

@@ -7,7 +7,7 @@ export function useFormField(){
 
     let component = `<div class="fsa-field">
     <label class="fsa-field__label" for="${newId}">${_data.label} ${_data.isRequired?'<span class="fsa-field__label-desc">Required</span>':''}</label>
-      <input class="fsa-input fsa-field__item" id="${newId}" name="${newId}" aria-describedby="${newId}-help-1" aria-required="${_data.isRequired?'true':'false'}" type="${_data.inputType}" value="">
+      <input class="fsa-input fsa-field__item" id="${newId}" name="${newId}" aria-describedby="${newId}-help-1" aria-required="${_data.isRequired?'true':'false'}" type="${_data.type}" value="">
       <span class="fsa-field__help" id="${newId}-help-1">${_data.help}</span>
     </div>`
     
