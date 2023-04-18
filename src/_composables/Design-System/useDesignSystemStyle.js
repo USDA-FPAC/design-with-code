@@ -1,8 +1,8 @@
 import { useUtilities } from "@/_composables/useUtilities";
 import { useTop } from '@/_composables/Design-System/page-areas/top';
 import { useBody } from "@/_composables/Design-System/page-areas/body";
-import { useTemplates } from "./layouts/useTemplates";
-import { useComponents } from "./components/useComponents";
+import { useTemplates } from "@/_composables/Design-System/layouts/useTemplates";
+import { useComponents } from "@/_composables/Design-System/useComponents";
 
 const { checkOnProd } = useUtilities();
 const projectLocation = checkOnProd() ? 'https://usda-fpac.github.io' : 'http://localhost:3000';
