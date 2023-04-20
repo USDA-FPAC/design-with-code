@@ -23,6 +23,11 @@ import { useRadioGroup } from '@/_composables/Design-System/components/useRadioG
 const { getRadioGroup } = useRadioGroup();
 get['radio-group'] = getRadioGroup;
 
+// Form Field
+import { useFormField } from "@/_composables/Design-System/components/useFormField";
+const { getFormField } = useFormField();
+get['form-field'] = getFormField;
+
 // Checkbox Group
 import { useCheckboxGroup } from "@/_composables/Design-System/components/useCheckboxGroup";
 const { getCheckboxGroup } = useCheckboxGroup();
@@ -58,7 +63,10 @@ import { useSteppedControls } from "@/_composables/Design-System/components/useS
 const { getSteppedControls } = useSteppedControls();
 get['stepped-controls'] = getSteppedControls;
 
-//
+// Switch
+import { useSwitch } from '@/_composables/Design-System/components/useSwitch';
+const { getSwitch } = useSwitch();
+get['switch'] = getSwitch;
 
 export function useComponents(){
 

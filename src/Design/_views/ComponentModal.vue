@@ -10,6 +10,23 @@
           <input v-model="label" class="fds-input fds-field__item" :id="labelId" :name="labelId" aria-required="true" type="text">
         </div>
 
+        <div class="fds-level">
+          <span class="fds-level fds-level--inline">
+            <label class="fds-switch">
+              <input @change="toggleRequired()" type="checkbox" class="fds-switch__checkbox" :id="isRequiredId" :name="isRequiredId">
+              <span class="fds-switch__track"></span>
+            </label>
+            <label :for="isRequiredId">Required</label>
+          </span>
+          <span class="fds-level fds-level--inline">
+            <label class="fds-switch">
+              <input @change="toggleSelected()" type="checkbox" class="fds-switch__checkbox" :id="isSelectedId" :name="isSelectedId">
+              <span class="fds-switch__track"></span>
+            </label>
+            <label :for="isSelectedId">Pre-selected</label>
+          </span>
+        </div>
+
         <div class="fds-field">
           <label class="fds-field__label" :for="classesId">Classes </label>
           <input v-model="classes" class="fds-input fds-field__item" :id="classesId" :name="classesId" aria-required="false" type="text">
@@ -74,15 +91,15 @@ export default {
     const stepId = ref(uuidv4());
     const help = ref('');
     const helpId = ref(uuidv4());
-    const iconOnly = ref(false);
+    const iconOnly = ref('false');
     const iconOnlyId = ref(uuidv4());
     const buttonLabel = ref('');
     const buttonLabelId = ref(uuidv4());
-    const isRequired = ref(false);
+    const isRequired = ref('false');
     const isRequiredId = ref(uuidv4());
-    const isSelected = ref(false);
+    const isSelected = ref('false');
     const isSelectedId = ref(uuidv4());
-    const directional = ref(false);
+    const directional = ref('false');
     const directionalId = ref(uuidv4());
     const status = ref('<strong>1</strong> of 5 Reports Process');
     const statusId = ref(uuidv4());
@@ -105,6 +122,14 @@ export default {
       d.classes = classes.value;
       d.data = jsonData.value == null ? arr.value : jsonData.value;
       d.prompt = prompt.value;
+      d.isRequired = isRequired.value == 'true' ? true : false;
+      d.help = help.value;
+      d.type = type.value;
+      d.iconOnly = iconOnly.value == 'true' ? true : false;
+      d.isSelected = isSelected.value == 'true' ? true : false;
+      d.directional = directional.value == 'true' ? true : false;
+      d.placeholder = placeholder.value;
+      d.val = val.value;
       
       emit('emitAddComponent', {
         action: 'onComponentUpdate',
@@ -126,16 +151,19 @@ export default {
       max.value = 100;
       step.value = 10;
       help.value = '';
-      iconOnly.value = false;
+      iconOnly.value = 'false';
       buttonLabel.value = '';
-      isRequired.value = false;
-      isSelected.value = false;
-      directional.value = false;
+      isRequired.value = 'false';
+      isSelected.value = 'false';
+      directional.value = 'false';
       status.value = '';
       primaryLabel.value = 'Continue';
       secondaryLabel.value = 'Previous';
       jsonData.value = null;
     }
+
+    const toggleRequired = () => { isRequired.value = isRequired.value=='true'?'true':'false' }
+    const toggleSelected = () => { isSelected.value = isSelected.value=='true'?'true':'false' }
 
 
     watch(componentName, (value) => {
@@ -188,7 +216,9 @@ export default {
       secondaryLabel,
       secondaryLabelId,
       jsonData,
-      jsonDataId
+      jsonDataId,
+      toggleRequired,
+      toggleSelected
     };
   }
 };
