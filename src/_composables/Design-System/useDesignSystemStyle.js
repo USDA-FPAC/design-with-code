@@ -72,7 +72,6 @@ export function useDesignSystemStyle() {
   }
 
   const updateCanvas = (_payload) => {
-
     let action = _payload.action;
     let data = [];
     let name = '';

@@ -1,0 +1,95 @@
+{
+  "list": [
+    {
+      "uid": "button-id",
+      "name": "button",
+      "display": "Button",
+      "isDefault": "true",
+      "keywords": "button, buttons, button group"
+    },
+    {
+      "uid": "button-group-id",
+      "name": "button-group",
+      "display": "Button Group",
+      "isDefault": "true",
+      "keywords": "button, buttons, button group, filter, toggle"
+    },
+    {
+      "uid": "checkbox-id",
+      "name": "checkbox",
+      "display": "Solo Checkbox",
+      "isDefault": "false",
+      "keywords": "checkbox group, checkbox, toggle, radio group"
+    },
+    {
+      "uid": "checkbox-group-id",
+      "name": "checkbox-group",
+      "display": "Checkbox Group",
+      "isDefault": "true",
+      "keywords": "checkbox group, checkbox, toggle, radio group"
+    },
+    {
+      "uid": "radio-group-id",
+      "name": "radio-group",
+      "display": "Radio Group",
+      "isDefault": "true",
+      "keywords": "radio group, checkbox group"
+    },
+    {
+      "uid": "form-field-id",
+      "name": "form-field",
+      "display": "Form Field",
+      "isDefault": "true",
+      "keywords": "form field, input, form, text box"
+    },
+    {
+      "uid": "search-id",
+      "name": "search",
+      "display": "Search",
+      "isDefault": "false",
+      "keywords": "search, input, text box"
+    },
+    {
+      "uid": "select-id",
+      "name": "select",
+      "display": "Select",
+      "isDefault": "true",
+      "keywords": "select, dropdown, select menu, menu"
+    },
+    {
+      "uid": "slider-id",
+      "name": "slider",
+      "display": "Slider",
+      "isDefault": "false",
+      "keywords": "slider, range"
+    },
+    {
+      "uid": "spinbox-id",
+      "name": "spinbox",
+      "display": "Spinbox",
+      "isDefault": "false",
+      "keywords": "spinbox, number box"
+    },
+    {
+      "uid": "text-input-id",
+      "name": "text-input",
+      "display": "Text Input",
+      "isDefault": "true",
+      "keywords": "text input, form field, text box"
+    },
+    {
+      "uid": "stepped-control-id",
+      "name": "stepped-control",
+      "display": "Stepped Control",
+      "isDefault": "true",
+      "keywords": "text input, form field, text box"
+    },
+    {
+      "uid": "switch-id",
+      "name": "switch",
+      "display": "Switch",
+      "isDefault": "false",
+      "keywords": "switch, toggle, checkbox, radio"
+    }
+  ]
+}

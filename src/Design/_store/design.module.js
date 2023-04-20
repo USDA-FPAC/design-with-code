@@ -4,25 +4,26 @@ import { designService } from '@/Design/_services/design.service';
 const state = () =>({
   isLoaded: false,
   errors: [],
-  data: []
+  itemsList: []
 });
   
 
 const getters = {
   isLoaded: state => state.isLoaded,
-  getErrors: state => state.errors
+  getErrors: state => state.errors,
+  getItems: state => state.itemsList
 };
 
 const actions = {
 
-  doAction( { commit, state, rootState }, payload ){
+  setItems( { commit, state, rootState } ){
     commit('SET_ERRORS', []);
 
-    designService.doNothing( (result) => {
+    designService.getItems( (result) => {
       if(result.errors){
         commit('SET_ERRORS', result.errors);
       } else {
-        commit('DO_MUTATION', result.data );
+        commit('SET_ITEMS', result.data );
       }
     });
   }
@@ -34,9 +35,8 @@ const mutations = {
     state.errors = payload;
   },
 
-  DO_MUTATION( state, payload ){
-    state.data = payload;
-    state.isLoaded = true;
+  SET_ITEMS( state, payload ){
+    state.itemsList = payload;
   },
 
 };

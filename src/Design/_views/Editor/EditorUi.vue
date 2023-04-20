@@ -3,46 +3,11 @@
     
     <div class="dwc-editor-canvas">
       <!-- Add markup here to show Multiple Layouts -->
-      <p>Search for a Component:</p>
-      <p><button @click="updateUI({ name:'button' })" class="fds-btn fds-btn--secondary">
-        Add Button
-      </button></p>
-      <p><button @click="updateUI( { name:'button-group' })" class="fds-btn fds-btn--secondary">
-        Add Button Group
-      </button></p>
-      <p><button @click="updateUI( { name:'checkbox' })" class="fds-btn fds-btn--secondary">
-        Add Solo Checkbox
-      </button></p>
-      <p><button @click="updateUI( { name:'radio-group' })" class="fds-btn fds-btn--secondary">
-        Add Radio Group
-      </button></p>
-      <p><button @click="updateUI({ name:'form-field' })" class="fds-btn fds-btn--secondary">
-        Add Form Field
-      </button></p>
-      <p><button @click="updateUI( { name:'checkbox-group' })" class="fds-btn fds-btn--secondary">
-        Add Checkbox Group
-      </button></p>
-      <p><button @click="updateUI( { name:'search' })" class="fds-btn fds-btn--secondary">
-          Add Search Field
-      </button></p>
-      <p><button @click="updateUI( { name:'select' })" class="fds-btn fds-btn--secondary">
-        Add Select
-      </button></p>
-      <p><button @click="updateUI( { name:'slider' })" class="fds-btn fds-btn--secondary">
-        Add Slider
-      </button></p>
-      <p><button @click="updateUI( { name:'spinbox' })" class="fds-btn fds-btn--secondary">
-        Add Spinbox
-      </button></p>
-      <p><button @click="updateUI( { name:'text-input' })" class="fds-btn fds-btn--secondary">
-        Add Text Input
-      </button></p>
-      <p><button @click="updateUI( { name:'stepped-controls' })" class="fds-btn fds-btn--secondary">
-        Add Stepped Controls
-      </button></p>
-      <p><button @click="updateUI( { name:'switch' })" class="fds-btn fds-btn--secondary">
-        Add Switch
-      </button></p>
+
+      <quick-find        
+        @emitSelectedComponent="handleSelectedComponent"
+        :DATA="itemsData"
+        ></quick-find>
       
     </div>
 
@@ -50,18 +15,31 @@
 </template>
 <script>
 
-import { ref, onMounted } from "vue";
+import { defineAsyncComponent, ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 //import { v4 as uuidv4 } from "uuid";
 import { useEditor } from "@/_composables/Design-System/useEditor";
 
+const QuickFind = defineAsyncComponent(() => import("@/Design/_views/Editor/QuickFind.vue"));
 
 export default {
+  components: {
+    QuickFind
+  },
   props: {
     CONTAINER_ID: String,
     CONTAINER_CLASS: String
   },
 
   setup(props, {emit}) {
+    
+    const store = useStore();
+
+    const itemsData = computed(()=>{
+      let data = store.getters['design/getItems'];
+      if(data) return data;
+      else return null;
+    })
 
     const { updateCanvas } = useEditor(emit);
     
@@ -74,12 +52,19 @@ export default {
       );
     }
 
-    onMounted(()=>{
+    const handleSelectedComponent = (_list) => {
+      console.log('_list',_list)
+      updateUI({name:_list,data:[]});
+    }
 
+    onMounted(()=>{
+      store.dispatch('design/setItems');
     });
 
     return {
-      updateUI
+      updateUI,
+      handleSelectedComponent,
+      itemsData
     };
   }
 };
