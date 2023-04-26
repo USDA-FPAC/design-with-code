@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { designRoutes } from '@/Design/_routes/design.routes.js';
-
+import { codeExportRoutes } from '@/CodeExport/_routes/codeExport.routes.js';
 import { aboutRoutes } from '@/About/_routes/about.routes.js';
 
 const routes = [
@@ -10,6 +10,7 @@ const routes = [
     component: () => import('@/_layouts/Main.vue'),
     children: [
       ...designRoutes,
+      ...codeExportRoutes,
       ...aboutRoutes,
       { 
         path: '/:pathMatch(.*)*',

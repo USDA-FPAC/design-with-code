@@ -32,11 +32,11 @@
         
       <template v-slot:containers>
         <div class="fds-m-t--m">
-          <editor-templates
+<!--           <editor-templates
             :CONTAINER_ID="templatesContainerId + '-container'"
             CONTAINER_CLASS=""
             @emitEditorAction="updateCanvas">
-          </editor-templates>
+          </editor-templates> -->
           
           <editor-ui
             :CONTAINER_ID="uiContainerId + '-container'"
@@ -44,12 +44,12 @@
             @emitEditorAction="updateCanvas">
           </editor-ui>
 
-          <!--<editor-code
+          <editor-code
             :CONTAINER_ID="codeContainerId + '-container'"
             CONTAINER_CLASS=""
             @emitEditorAction="updateCanvas"
             @interface="getChildInterface">
-          </editor-code>-->
+          </editor-code>
 
         </div>
       </template>
@@ -92,7 +92,7 @@ export default {
     const codeContainerRef = ref(null);
 
     const tabsData = ref([
-      {
+      /* {
         id: templatesContainerId.value,
         label: 'Templates',
         iconSize: '2',
@@ -100,17 +100,17 @@ export default {
         iconFillHex: '#494440',
         isSelected: true,
         containerId: templatesContainerId.value +'-container'
-      },
+      }, */
       {
         id: uiContainerId.value,
         label: 'UI',
         iconSize: '2',
         iconPath: 'M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z',
         iconFillHex: '#494440',
-        isSelected: false,
+        isSelected: true,
         containerId: uiContainerId.value +'-container'
-      }      
-      /* {
+      },      
+      {
         id: codeContainerId.value,
         label: 'Code',
         iconSize: '2',
@@ -118,7 +118,7 @@ export default {
         iconFillHex: '#494440',
         isSelected: false,
         containerId: codeContainerId.value +'-container'
-      } */
+      }
     ]);
 
     let childInterface = () => {};

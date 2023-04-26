@@ -84,7 +84,6 @@ export default {
 
     const setSourceDoc = (_data) => {
       sourceDoc.value = _data.app;
-      store.dispatch('codeExport/setHtml',sourceDoc.value);
     }
 
     const undo = () => {
