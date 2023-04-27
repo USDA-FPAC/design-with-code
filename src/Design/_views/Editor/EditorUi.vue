@@ -47,14 +47,15 @@ export default {
       updateCanvas(
         {
           action: 'onComponentUpdate',
-          details: { name: _obj.name, data: _obj.data }
+          methodName: _obj.name,
+          obj: _obj
         }
       );
     }
 
-    const handleSelectedComponent = (_list) => {
-      console.log('_list',_list)
-      updateUI({name:_list,data:[]});
+    const handleSelectedComponent = (_data) => {
+      console.log('handleSelectedComponent > _data',_data)
+      updateUI(_data);
     }
 
     onMounted(()=>{

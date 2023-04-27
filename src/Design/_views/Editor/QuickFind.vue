@@ -31,9 +31,18 @@ export default {
     const quickFindResultsId = ref(uuidv4());
     const phrase = ref('');
 
-    const selectItem = (_name) => {
-      console.log('selectItem',_name)
-      emit('emitSelectedComponent', _name)
+    const selectItem = (_data) => {
+      let newObj = {};
+      let properties = _data.split("|");
+      let len = properties.length;
+      let cnt = 1;
+
+      properties.forEach((item)=>{
+        if(cnt < len )newObj[item.split(':')[0]] = item.split(':')[1];
+        cnt++;
+      });
+
+      emit('emitSelectedComponent', newObj)
     }
 
     const searchComponents = (_evt) => {

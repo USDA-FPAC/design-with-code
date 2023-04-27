@@ -55,7 +55,8 @@ export default {
         updateCanvas(
         {
           action: 'onCodeUpdate',
-          details: { name: _obj.name, data: _outputData.blocks }
+          methodName: _obj.name,
+          obj: { arr: _outputData.blocks }
         }
       );
 

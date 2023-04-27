@@ -68,14 +68,26 @@ import { useSwitch } from '@/_composables/Design-System/components/useSwitch';
 const { getSwitch } = useSwitch();
 get['switch'] = getSwitch;
 
+// Grid
+import { useGrid } from '@/_composables/Design-System/components/useGrid';
+const { getGrid } = useGrid();
+get['grid'] = getGrid;
+
 export function useComponents(){
 
-  const getComponent =(_name, _data) => {
+  const getComponent =(_methodName, _data) => {
+    /*
+      {
+        action: 'onComponentUpdate',
+        methodName: _obj.name,
+        obj: _obj
+      }
+    */
     let newId = uuidv4();
-    console.log('_name',_name)
+    console.log('_methodName',_methodName)
     let component = `<div id="${newId}" class="dwc-overlay">`;
     try{
-      component += get[_name](_data);
+      component += get[_methodName](_data);
     } catch(_err){
       console.log('useComponents > getComponent Error: ', _err)
     }

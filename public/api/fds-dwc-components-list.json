@@ -5,6 +5,7 @@
       "name": "button",
       "display": "Button",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "button, buttons, button group"
     },
     {
@@ -12,6 +13,7 @@
       "name": "button-group",
       "display": "Button Group",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "button, buttons, button group, filter, toggle"
     },
     {
@@ -19,6 +21,7 @@
       "name": "checkbox",
       "display": "Solo Checkbox",
       "isDefault": "false",
+      "useConfig": "true",
       "keywords": "checkbox group, checkbox, toggle, radio group"
     },
     {
@@ -26,6 +29,7 @@
       "name": "checkbox-group",
       "display": "Checkbox Group",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "checkbox group, checkbox, toggle, radio group"
     },
     {
@@ -33,6 +37,7 @@
       "name": "radio-group",
       "display": "Radio Group",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "radio group, checkbox group"
     },
     {
@@ -40,6 +45,7 @@
       "name": "form-field",
       "display": "Form Field",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "form field, input, form, text box"
     },
     {
@@ -47,6 +53,7 @@
       "name": "search",
       "display": "Search",
       "isDefault": "false",
+      "useConfig": "true",
       "keywords": "search, input, text box"
     },
     {
@@ -54,6 +61,7 @@
       "name": "select",
       "display": "Select",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "select, dropdown, select menu, menu"
     },
     {
@@ -61,6 +69,7 @@
       "name": "slider",
       "display": "Slider",
       "isDefault": "false",
+      "useConfig": "true",
       "keywords": "slider, range"
     },
     {
@@ -68,6 +77,7 @@
       "name": "spinbox",
       "display": "Spinbox",
       "isDefault": "false",
+      "useConfig": "true",
       "keywords": "spinbox, number box"
     },
     {
@@ -75,21 +85,123 @@
       "name": "text-input",
       "display": "Text Input",
       "isDefault": "true",
+      "useConfig": "true",
       "keywords": "text input, form field, text box"
     },
     {
-      "uid": "stepped-control-id",
-      "name": "stepped-control",
-      "display": "Stepped Control",
+      "uid": "stepped-controls-id",
+      "name": "stepped-controls",
+      "display": "Stepped Controls",
       "isDefault": "true",
-      "keywords": "text input, form field, text box"
+      "useConfig": "true",
+      "keywords": "step, steps, stepped control, stepped controls, stepped tab, stepped tabs, process flow, stepped process"
     },
     {
       "uid": "switch-id",
       "name": "switch",
       "display": "Switch",
       "isDefault": "false",
+      "useConfig": "true",
       "keywords": "switch, toggle, checkbox, radio"
+    },
+    {
+      "uid": "grid-1-id",
+      "name": "grid",
+      "type": "grid-1",
+      "display": "Grid 1",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1",
+      "display": "Grid 2 (1-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1-1",
+      "display": "Grid 3 (1-1-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-2-1-id",
+      "name": "grid",
+      "type": "grid-2-1",
+      "display": "Grid 3 (2-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-id",
+      "name": "grid",
+      "type": "grid-1-2",
+      "display": "Grid 3 (1-2)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1-1-1",
+      "display": "Grid 4 (1-1-1-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-2-1-1-id",
+      "name": "grid",
+      "type": "grid-2-1-1",
+      "display": "Grid 4 (2-1-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-2-id",
+      "name": "grid",
+      "type": "grid-1-1-2",
+      "display": "Grid 4 (1-1-2)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-3-1-id",
+      "name": "grid",
+      "type": "grid-3-1",
+      "display": "Grid 4 (3-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-3-id",
+      "name": "grid",
+      "type": "grid-1-3",
+      "display": "Grid 4 (1-3)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-2-1-id",
+      "name": "grid",
+      "type": "grid-1-2-1",
+      "display": "Grid 4 (1-2-1)",
+      "isDefault": "false",
+      "useConfig": "false",
+      "keywords": "grid, grid system, layout"
     }
   ]
 }

@@ -32,18 +32,18 @@
         
       <template v-slot:containers>
         <div class="fds-m-t--m">
+          <editor-ui
+            :CONTAINER_ID="uiContainerId + '-container'"
+            CONTAINER_CLASS=""
+            @emitEditorAction="updateCanvas">
+          </editor-ui>
+          
           <editor-templates
             :CONTAINER_ID="templatesContainerId + '-container'"
             CONTAINER_CLASS=""
             @emitEditorAction="updateCanvas">
           </editor-templates>
           
-          <editor-ui
-            :CONTAINER_ID="uiContainerId + '-container'"
-            CONTAINER_CLASS=""
-            @emitEditorAction="updateCanvas">
-          </editor-ui>
-
           <!--<editor-code
             :CONTAINER_ID="codeContainerId + '-container'"
             CONTAINER_CLASS=""
@@ -93,23 +93,24 @@ export default {
 
     const tabsData = ref([
       {
-        id: templatesContainerId.value,
-        label: 'Templates',
-        iconSize: '2',
-        iconPath: 'M10 18h5v-6h-5v6zm-6 0h5V5H4v13zm12 0h5v-6h-5v6zM10 5v6h11V5H10z',
-        iconFillHex: '#494440',
-        isSelected: true,
-        containerId: templatesContainerId.value +'-container'
-      },
-      {
         id: uiContainerId.value,
         label: 'UI',
         iconSize: '2',
         iconPath: 'M20 13H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-6c0-.55-.45-1-1-1zM7 19c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM20 3H4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1zM7 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z',
         iconFillHex: '#494440',
-        isSelected: false,
+        isSelected: true,
         containerId: uiContainerId.value +'-container'
-      }      
+      },
+      {
+        id: templatesContainerId.value,
+        label: 'Templates',
+        iconSize: '2',
+        iconPath: 'M10 18h5v-6h-5v6zm-6 0h5V5H4v13zm12 0h5v-6h-5v6zM10 5v6h11V5H10z',
+        iconFillHex: '#494440',
+        isSelected: false,
+        containerId: templatesContainerId.value +'-container'
+      }
+           
       /* {
         id: codeContainerId.value,
         label: 'Code',

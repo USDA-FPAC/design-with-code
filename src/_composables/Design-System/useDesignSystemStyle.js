@@ -72,22 +72,32 @@ export function useDesignSystemStyle() {
   }
 
   const updateCanvas = (_payload) => {
+    /*
+      {
+        action: 'onComponentUpdate',
+        methodName: _obj.name,
+        obj: _obj
+      }
+    */
     let action = _payload.action;
+    let obj = {};
+    let methodName = '';
     let data = [];
-    let name = '';
     try{
-      name = _payload.details.name;
-      data = _payload.details.data;
+      methodName = _payload.methodName;
+      obj = _payload.obj;
+      data = _payload.obj.arr;
+      console.log('useDesignSystemStyle > updateCanvas > _payload.obj', obj)
     } catch (_err) {
-      console.log('updateCanvas Error: ', _err)
+      console.log('Custom updateCanvas Error: ', _err)
     }
 
     if( action == "onTemplateUpdate") {
-      programData.layout = name;
+      programData.layout = methodName;
       allHtml = getTemplate( programData );
     }
 
-    if( action == "onComponentUpdate") allHtml = rebuildCanvas( getComponent(name, data) );
+    if( action == "onComponentUpdate") allHtml = rebuildCanvas( getComponent(methodName, obj) );
 
     if( action == "onCodeUpdate"){
       let code = ``;

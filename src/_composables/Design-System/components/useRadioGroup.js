@@ -6,9 +6,9 @@ export function useRadioGroup(){
     let newId = uuidv4();
     let groupName = uuidv4();
     
-    let component = `<div class="fsa-field"><label class="fsa-field__label" id="${newId}">${_data.prompt}</label><ul class="fsa-form-list" aria-labelledby="${newId}">`;  
+    let component = `<div class="fsa-field ${_data.classes}"><label class="fsa-field__label" id="${newId}">${_data.prompt}</label><ul class="fsa-form-list" aria-labelledby="${newId}">`;  
     _data.arr.forEach(item => {
-      component += `<li><span><input class="fsa-radio" id="${item.id}" type="radio" name="${groupName}"><label for="${item.id}">${item.label}</label></span></li>` 
+      component += `<li><span><input class="fsa-radio" id="${item.id}" ${_data.isDisabled?'disabled="disabled"':''} type="radio" name="${groupName}"><label for="${item.id}">${item.label}</label></span></li>` 
     });
     component += `</ul><span class="fsa-field__help" id="${newId}-help">${_data.help}</span></div>`;
     

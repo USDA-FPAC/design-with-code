@@ -29,9 +29,14 @@ export function useQuickFind() {
     let newHTML = ``;
     _arr.forEach( item => {
       // add FDS Style specific parameters
-      let kw = String(item.keywords).split(',').join(', ');
+      let kw = item.keywords; //String(item.keywords).split(',').join(', ');
 
-      newHTML += `<p><a class="fds-btn fds-btn--secondary" onclick="event.preventDefault(); QFCallback('${item.name}');" href="">${item.display.charAt(0).toUpperCase() + item.display.slice(1)}</a></p>`;
+      let str = '';
+      for (const [key, value] of Object.entries(item)) {
+        str += `${key}:${value}|`;
+      }
+
+      newHTML += `<p><a class="fds-btn fds-btn--secondary" title="${kw}" onclick="event.preventDefault(); QFCallback('${str}');" href="">${item.display.charAt(0).toUpperCase() + item.display.slice(1)}</a></p>`;
 
     });
     buildItemsHolder(newHTML);

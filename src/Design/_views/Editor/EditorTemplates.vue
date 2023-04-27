@@ -46,7 +46,8 @@ export default {
       updateCanvas(
         {
           action: 'onTemplateUpdate',
-          details: { name: _obj.name }
+          methodName: _obj.name,
+          obj: {}
         }
       )
     }

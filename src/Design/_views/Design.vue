@@ -36,8 +36,9 @@
       :MODAL_ID="componentModalId"
       CLASSES="fds-modal--top"
       TITLE="Add Properties"
-      :NAME="componentName"
-      @emitAddComponent="handleAddComponent"
+      :NAME="methodName"
+      :USE_LIST="useList"
+      @emitModalAdditions="handleModalAdditions"
     >
     </component-modal>
 </main>
@@ -78,7 +79,19 @@ export default {
     } = useModalControls();
     const componentModalId = ref( uuidv4() );
     setModalId(componentModalId.value);
-    const componentName = ref();
+    const methodName = ref();
+    const useList = ref({
+      useType: true,
+      useClasses: true,
+      useLabel: true,
+      usePrompt: false,
+      usePlaceholder: true,
+      useName: true,
+      useHelp: true,
+      useIsRequired: true,
+      useIsSelected: true,
+      useJsonData: false
+    });
 
     let sourceDoc = ref();
 
@@ -100,15 +113,38 @@ export default {
     }
 
     const handleUpdateCanvas = (_data) => {
-      //console.log('updateHtmlCode',_data)
-      // if component show modal
-      componentName.value = _data.details.name;
-      showModal(componentModalId.value);
+      /*
+      {
+        action: 'onComponentUpdate',
+        methodName: _obj.name,
+        obj: _obj
+      }
+      */
+     console.log('Design.vue > handleUpdateCanvas > _data',_data)
+      
+      if(_data.action=='onTemplateUpdate'){
+        setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+      }
 
-      //setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+      if(_data.action=='onComponentUpdate'){
+        methodName.value = _data.methodName;
+        let obj = _data.obj;
+        if(obj.hasOwnProperty('useConfig')){
+          let useConfig = obj.useConfig == "true" ? true : false;
+          
+          if(useConfig){
+            showModal(componentModalId.value);
+          } else {
+            setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+          }
+
+        } else {
+          setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+        }
+      }
     }
 
-    const handleAddComponent = (_data) => {
+    const handleModalAdditions = (_data) => {
       setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
@@ -132,8 +168,9 @@ export default {
       undo,
       redo,
       componentModalId,
-      handleAddComponent,
-      componentName
+      handleModalAdditions,
+      methodName,
+      useList
     };
   }
 };
