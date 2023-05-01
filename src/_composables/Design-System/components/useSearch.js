@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useSearch(){
 
   const getSearch =(_data) => {
-    let newId = uuidv4();
+    let newId = String('dws-' + uuidv4());
 
     let component = `<div class="fsa-search" role="search">
       <div class="fsa-search__bd">

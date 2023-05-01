@@ -68,10 +68,11 @@ export default {
     const baseUrl = ref(import.meta.env.BASE_URL);
     const store = useStore();
     const { goto } = useNavigation();
-    const { updateSource, listenToFrame } = useDesignSystemStyle();
+    
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
+    const { updateSource, listenToFrame } = useDesignSystemStyle(String(iFrameId.value));
     const {
       setModalId,
       showModal,
@@ -81,7 +82,7 @@ export default {
     setModalId(componentModalId.value);
     const methodName = ref();
     const useList = ref({
-      useType: true,
+      useType: false,
       useClasses: true,
       useLabel: true,
       usePrompt: false,
@@ -90,7 +91,7 @@ export default {
       useHelp: true,
       useIsRequired: true,
       useIsSelected: true,
-      useJsonData: false
+      useJsonData: true
     });
 
     let sourceDoc = ref();

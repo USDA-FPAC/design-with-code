@@ -6,7 +6,7 @@ export function useCheckbox(){
     let newId = uuidv4();
     let boxName = uuidv4();
     
-    let component = `<span><input class="fsa-checkbox fsa-checkbox--solo" id="${newId}" type="checkbox" name="${boxName}" value="${boxName}">
+    let component = `<span><input class="fsa-checkbox fsa-checkbox--solo" id="dwc-${newId}" type="checkbox" name="${boxName}" value="${boxName}" ${_data.isSelected ? 'checked=""' : ''}>
       <label for="${boxName}"><span class="fsa-sr-only">${_data.label}</span></label>
     </span>`;
     

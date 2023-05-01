@@ -12,8 +12,12 @@
     </div>
     <div :class="'ds-nav-drawer-layout__bd ' + (isMenuOpen ? 'ds-nav-drawer-layout--open ' : '')">
       
-      <router-view></router-view>
-    
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+w 
     </div>
   </div>
 </template>

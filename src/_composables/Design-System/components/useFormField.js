@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useFormField(){
 
   const getFormField =(_data) => {
-    let newId = uuidv4();
+    let newId = String('dws-' + uuidv4());
 
     let component = `<div class="fsa-field">
     <label class="fsa-field__label" for="${newId}">${_data.label} ${_data.isRequired?'<span class="fsa-field__label-desc">Required</span>':''}</label>

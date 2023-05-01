@@ -11,9 +11,10 @@ const { mainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom,
 const { getTemplate } = useTemplates(projectLocation);
 const { getComponent } = useComponents(projectLocation);
 
-export function useDesignSystemStyle() {
+export function useDesignSystemStyle(_frameId=null) {
   
   let allHtml = '';
+  let frameId = _frameId;
   let appHistory = [];
   let version = 0;
   let allowComms = false;
@@ -116,7 +117,31 @@ export function useDesignSystemStyle() {
   };
 
   const rebuildCanvas = (_code) => {
-    panels[selectedPanelId] = _code;
+
+    //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
+
+    let doc = document.createElement('div');
+    doc.innerHTML = allHtml;
+
+    //let selectorStr = '#'+selectedPanelId;
+
+    let source = doc.querySelector(`#${selectedPanelId}`);
+    let srcStr = String(source.outerHTML);
+
+    //console.log('srcStr', srcStr);
+    
+    allHtml = allHtml.split(srcStr).join(_code);
+
+    //console.log('allHtml', allHtml)
+
+    doc.remove()
+    
+    return allHtml
+
+  }
+
+  const initCanvas = () => {
+    //panels[selectedPanelId] = _code;
     allHtml = getTop( { css: programData.css } );
     allHtml += panels['header-app']( programData );
     allHtml += mainTop;
@@ -126,6 +151,7 @@ export function useDesignSystemStyle() {
     allHtml += panels['stepped-controls'];
     allHtml += mainBottom;
     allHtml += frameScripts;
+    allHtml += `</body></html>`;
     return allHtml
   }
 
@@ -133,11 +159,13 @@ export function useDesignSystemStyle() {
     ///// Initialize /////
     if(_init){
       let arr = [{ id:'init', type:'rawHtml', data: {html:bodyInit} }];
-      let app = updateCanvas({
+      /* let app = updateCanvas({
         action: 'onCodeUpdate',
-        details: { name: '', data: arr}
-      });
-      let h = setHistory(app);
+        methodName: '',
+        obj: { arr: arr }
+      }); */
+      let initApp = initCanvas();
+      let h = setHistory(initApp);
       return h;
     } 
     /////

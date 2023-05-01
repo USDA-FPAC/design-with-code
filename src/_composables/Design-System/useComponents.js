@@ -85,7 +85,7 @@ export function useComponents(){
     */
     let newId = uuidv4();
     console.log('_methodName',_methodName)
-    let component = `<div id="${newId}" class="dwc-overlay">`;
+    let component = `<div id="dwc-${newId}" class="dwc-overlay">`;
     try{
       component += get[_methodName](_data);
     } catch(_err){

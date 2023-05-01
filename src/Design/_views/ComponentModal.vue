@@ -207,9 +207,6 @@ export default {
 
 
     watch([componentName, useList], (value1, value2) => {
-      console.log('value1',value1)
-      console.log('value2',value2[1])
-
       cName.value = value1[0];
       useMe.value = value2[1];
     });

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useSwitch(){
 
   const getSwitch =(_data) => {
-    let newId = uuidv4();
+    let newId = String('dws-' + uuidv4());
     let component = `<span class="fsa-level fsa-level--inline">`;
 
     if(_data.labelLeft){

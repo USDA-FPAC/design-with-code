@@ -26,6 +26,8 @@ export function useTop(_projectLocation=null) {
       </head>`;
     }
 
+    h += `<body>`
+
     return h;
   }
   

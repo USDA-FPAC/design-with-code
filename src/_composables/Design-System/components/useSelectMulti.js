@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useSelectMulti(){
 
   const getSelectMulti =(_data) => {
-    let newId = uuidv4();
+    let newId = String('dws-' + uuidv4());
     let groupName = uuidv4();
     
     let component = `<div class="fsa-select-multi" id="${newId}">
