@@ -88,7 +88,6 @@ export function useDesignSystemStyle(_frameId=null) {
       methodName = _payload.methodName;
       obj = _payload.obj;
       data = _payload.obj.arr;
-      console.log('useDesignSystemStyle > updateCanvas > _payload.obj', obj)
     } catch (_err) {
       console.log('Custom updateCanvas Error: ', _err)
     }
@@ -98,7 +97,7 @@ export function useDesignSystemStyle(_frameId=null) {
       allHtml = getTemplate( programData );
     }
 
-    if( action == "onComponentUpdate") allHtml = rebuildCanvas( getComponent(methodName, obj) );
+    if( action == "onComponentUpdate") allHtml = rebuildCanvas( obj.placementLocation, getComponent(methodName, obj) );
 
     if( action == "onCodeUpdate"){
       let code = ``;
@@ -116,28 +115,51 @@ export function useDesignSystemStyle(_frameId=null) {
     return allHtml;
   };
 
-  const rebuildCanvas = (_code) => {
-
+  const rebuildCanvas = (_location, _code) => {
     //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
-
     let doc = document.createElement('div');
     doc.innerHTML = allHtml;
 
-    //let selectorStr = '#'+selectedPanelId;
-
     let source = doc.querySelector(`#${selectedPanelId}`);
     let srcStr = String(source.outerHTML);
-
+    let clips = allHtml.split(srcStr);
+    let level = ``;
     //console.log('srcStr', srcStr);
-    
-    allHtml = allHtml.split(srcStr).join(_code);
 
-    //console.log('allHtml', allHtml)
+    switch(_location){
+      case 'replace':
+        allHtml = clips.join(_code);
+        break;
 
-    doc.remove()
+      case 'above':
+        allHtml = clips[0] + _code + srcStr + clips[1];
+        break;
+
+      case 'below':
+        allHtml = clips[0] + srcStr + _code + clips[1];
+        break;
+
+      case 'left': 
+        level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
+        allHtml = clips[0] + level + clips[1];
+        break;
+
+      case 'right':
+        level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
+        allHtml = clips[0] + level + clips[1];
+        break;
+
+      case 'remove':
+        allHtml = clips[0] + clips[1];
+        break;
+
+      default:
+        allHtml = clips.join(_code);
+    }
+
+    doc.remove();
     
     return allHtml
-
   }
 
   const initCanvas = () => {

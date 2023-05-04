@@ -3,3 +3,14 @@
 body {
   background-color: $color-fds-tertiary-200
 }
+
+.fds-modal{
+
+  &--top {
+    padding-top: 1vh;
+  }
+
+  &__dialog {
+    max-width: 480px;
+  }
+}

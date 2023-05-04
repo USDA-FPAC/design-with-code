@@ -85,7 +85,7 @@ export default {
       useType: false,
       useClasses: true,
       useLabel: true,
-      usePrompt: false,
+      usePrompt: true,
       usePlaceholder: true,
       useName: true,
       useHelp: true,

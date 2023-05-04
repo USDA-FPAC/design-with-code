@@ -17,7 +17,7 @@
           <component :is="Component" />
         </keep-alive>
       </router-view>
-w 
+
     </div>
   </div>
 </template>

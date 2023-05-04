@@ -73,6 +73,11 @@ import { useGrid } from '@/_composables/Design-System/components/useGrid';
 const { getGrid } = useGrid();
 get['grid'] = getGrid;
 
+
+// Remove Element
+const getRemove = (_data=null) => { return `` }
+get['remove'] = getRemove;
+
 export function useComponents(){
 
   const getComponent =(_methodName, _data) => {
@@ -83,16 +88,28 @@ export function useComponents(){
         obj: _obj
       }
     */
-    let newId = uuidv4();
-    console.log('_methodName',_methodName)
-    let component = `<div id="dwc-${newId}" class="dwc-overlay">`;
-    try{
-      component += get[_methodName](_data);
-    } catch(_err){
-      console.log('useComponents > getComponent Error: ', _err)
-    }
-    return component + `</div>`;
+    console.log('_methodName',_methodName);
 
+    let newId = uuidv4();
+    let component = ``;
+    
+    if(_methodName == 'remove '){
+      component = get[_methodName](_data);
+    } else {
+      
+      component = `<div id="dwc-${newId}" class="dwc-overlay">`;
+      
+      try{
+        component += get[_methodName](_data);
+      } catch(_err){
+        console.log('useComponents > getComponent Error: ', _err)
+      }
+
+      component += `</div>`;
+    }
+
+    return component;
+    
   }
 
   return {

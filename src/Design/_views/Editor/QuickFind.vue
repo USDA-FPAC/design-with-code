@@ -38,7 +38,7 @@ export default {
       let cnt = 1;
 
       properties.forEach((item)=>{
-        if(cnt < len )newObj[item.split(':')[0]] = item.split(':')[1];
+        if(cnt < len ) newObj[item.split(':')[0]] = item.split(':')[1];
         cnt++;
       });
 

@@ -110,7 +110,7 @@
       "type": "grid-1",
       "display": "Grid 1",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -119,7 +119,7 @@
       "type": "grid-1-1",
       "display": "Grid 2 (1-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -128,7 +128,7 @@
       "type": "grid-1-1-1",
       "display": "Grid 3 (1-1-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -137,7 +137,7 @@
       "type": "grid-2-1",
       "display": "Grid 3 (2-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -146,7 +146,7 @@
       "type": "grid-1-2",
       "display": "Grid 3 (1-2)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -155,7 +155,7 @@
       "type": "grid-1-1-1-1",
       "display": "Grid 4 (1-1-1-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -164,7 +164,7 @@
       "type": "grid-2-1-1",
       "display": "Grid 4 (2-1-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -173,7 +173,7 @@
       "type": "grid-1-1-2",
       "display": "Grid 4 (1-1-2)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -182,7 +182,7 @@
       "type": "grid-3-1",
       "display": "Grid 4 (3-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -191,7 +191,7 @@
       "type": "grid-1-3",
       "display": "Grid 4 (1-3)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     },
     {
@@ -200,7 +200,7 @@
       "type": "grid-1-2-1",
       "display": "Grid 4 (1-2-1)",
       "isDefault": "false",
-      "useConfig": "false",
+      "useConfig": "true",
       "keywords": "all, grid, grid system, layout"
     }
   ]

@@ -54,7 +54,7 @@ export default {
     }
 
     const handleSelectedComponent = (_data) => {
-      console.log('handleSelectedComponent > _data',_data)
+      //console.log('handleSelectedComponent > _data',_data)
       updateUI(_data);
     }
 

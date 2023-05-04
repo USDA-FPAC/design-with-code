@@ -4,21 +4,61 @@
       <div class="fds-modal__content">
         <button @click="hideModal(MODAL_ID)" class="fds-modal__close" data-behavior="close-modal" title="Close Modal" aria-label="Close Modal" type="button"></button>
         <h1 class="fds-modal__title">{{ TITLE }} - {{ NAME }}</h1>
+
+        <!-- <label class="fds-switch">
+          <input @change="toggleAddBelow()" type="checkbox" class="fds-switch__checkbox" :id="toggleAddBelowId" :name="toggleAddBelowId">
+          <span class="fds-switch__track"></span>
+        </label>
+        <label :for="toggleAddBelowId">Add Below</label>
+      </span>
+      <span class="fds-level fds-level--inline">
+        <label class="fds-switch">
+          <input @change="toggleAddRight()" type="checkbox" class="fds-switch__checkbox" :id="toggleAddRightId" :name="toggleAddRightId">
+          <span class="fds-switch__track"></span>
+        </label>
+        <label :for="toggleAddRightId">Add Right</label>
+      </span> -->
         
+        <div class="fds-level fds-m-t--m fds-m-b--s">
+          
+          <span class="fds-m-r--s">
+            Placement:
+          </span>
+          <span class="fds-btn-group fds-btn-group--small" role="group" aria-label="Where to add element">
+            <button :id="placementReplaceId" @click="togglePlacement('replace')" class="fds-btn-group__item fds-btn-group__item--active" aria-selected="true" type="button" title="Replace">
+              <svg class="fds-icon fds-icon--size-1" aria-hidden="true" focusable="false" role="img" fill="#494440" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"></path></svg>  
+            </button>
+            <button :id="placementLeftId" @click="togglePlacement('left')" class="fds-btn-group__item" aria-selected="false" type="button" title="Add Left">
+              <svg class="fds-icon fds-icon--size-1" aria-hidden="true" focusable="false" role="img" fill="#494440" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg>
+            </button>
+            <button :id="placementTopId" @click="togglePlacement('above')" class="fds-btn-group__item" aria-selected="false" type="button" title="Add Above">
+              <svg class="fds-icon fds-icon--size-1" aria-hidden="true" focusable="false" role="img" fill="#494440" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"></path></svg>
+            </button>
+            <button :id="placementBottomId" @click="togglePlacement('below')" class="fds-btn-group__item" aria-selected="false" type="button" title="Add below">
+              <svg class="fds-icon fds-icon--size-1" aria-hidden="true" focusable="false" role="img" fill="#494440" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path></svg>
+            </button>
+            <button :id="placementRightId" @click="togglePlacement('right')" class="fds-btn-group__item" aria-selected="false" type="button"  title="Add Right">
+              <svg class="fds-icon fds-icon--size-1" aria-hidden="true" focusable="false" role="img" fill="#494440" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path></svg>
+            </button>
+          </span>
+            
+        </div>
+
         <div v-if="useMe.useType" class="fds-field">
           <label class="fds-field__label" :for="labelId">Type </label>
           <input v-model="type" class="fds-input fds-field__item" :id="typeId" :name="typeId" aria-required="true" type="text">
-        </div>
-
-        <div v-if="useMe.useLabel" class="fds-field">
-          <label class="fds-field__label" :for="labelId">Label </label>
-          <input v-model="label" class="fds-input fds-field__item" :id="labelId" :name="labelId" aria-required="true" type="text">
         </div>
 
         <div v-if="useMe.usePrompt" class="fds-field">
           <label class="fds-field__label" :for="promptId">Prompt </label>
           <input v-model="prompt" class="fds-input fds-field__item" :id="promptId" :name="promptId" aria-required="true" type="text">
         </div>
+
+        <div v-if="useMe.useLabel" class="fds-field">
+          <label class="fds-field__label" :for="labelId">Label </label>
+          <input v-model="label" class="fds-input fds-field__item" :id="labelId" :name="labelId" aria-required="true" type="text">
+        </div>
+        
 
         <div class="fds-level">
           <span v-if="useMe.useIsRequired" class="fds-level fds-level--inline">
@@ -150,6 +190,7 @@ export default {
 
     const addComponent = () => {
       let d = {};
+      d.placementLocation = placementLocation.value;
       d.label = label.value;
       d.classes = classes.value;
       d.prompt = prompt.value;
@@ -180,6 +221,7 @@ export default {
     }
 
     const resetFields = () => {
+      togglePlacement('replace');
       classes.value = '';
       prompt.value = '';
       type.value = '';
@@ -205,6 +247,39 @@ export default {
     const toggleRequired = () => { isRequired.value = isRequired.value=='true'?'true':'false' }
     const toggleSelected = () => { isSelected.value = isSelected.value=='true'?'true':'false' }
 
+    const placementLocation = ref('replace');
+  
+    const placementReplaceId = ref(uuidv4());
+    const placementLeftId = ref(uuidv4());
+    const placementTopId = ref(uuidv4());
+    const placementBottomId = ref(uuidv4());
+    const placementRightId = ref(uuidv4());
+
+    const placementIds = {};
+    placementIds['replace'] = placementReplaceId.value;
+    placementIds['left'] = placementLeftId.value;
+    placementIds['above'] = placementTopId.value;
+    placementIds['below'] = placementBottomId.value;
+    placementIds['right'] = placementRightId.value;
+
+    const resetPlacementControls = () => {
+      let keys = Object.keys(placementIds);
+      keys.forEach((key) => {
+        let id = placementIds[key];
+        let el = document.getElementById( id );
+        el.classList.remove('fds-btn-group__item--active');
+        el.ariaSelected = 'false'; 
+      })
+    }
+
+    const togglePlacement = (_where) => {
+      resetPlacementControls()
+      let btn = document.getElementById( placementIds[_where] );
+      btn.classList.add('fds-btn-group__item--active');
+      btn.ariaSelected = 'true';
+      placementLocation.value = _where;
+    }
+
 
     watch([componentName, useList], (value1, value2) => {
       cName.value = value1[0];
@@ -218,6 +293,12 @@ export default {
     return {
       hideModal,
       addComponent,
+      togglePlacement,
+      placementReplaceId,
+      placementLeftId,
+      placementTopId,
+      placementBottomId,
+      placementRightId,
       classes,
       classesId,
       prompt,

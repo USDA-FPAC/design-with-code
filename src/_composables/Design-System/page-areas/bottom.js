@@ -1,7 +1,7 @@
-
+import { v4 as uuidv4 } from "uuid";
 export function useBottom(){
 
-  const footer = `<footer>
+  const footer = `<footer id="dwc-${uuidv4()}">
   <div class="fsa-topper">
     <div class="fsa-topper__bd"><a class="fsa-topper__link" href="#main-content">Return to top</a></div>
   </div>

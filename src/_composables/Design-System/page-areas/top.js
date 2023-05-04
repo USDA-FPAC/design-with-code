@@ -1,4 +1,4 @@
-
+import { v4 as uuidv4 } from "uuid";
 export function useTop(_projectLocation=null) {
 
   const getTop = (_data=null) => {
@@ -35,7 +35,7 @@ export function useTop(_projectLocation=null) {
     let h = ``;
     if(_data != null || _data != ''){
       h = `<!-- Start Global Nav Component -->
-      <nav id="global-nav" class="dwc-overlay">
+      <nav id="dwc-${uuidv4()}" class="dwc-overlay">
         <div class="fsa-nav-global ${_layout=='fullscreen'?'fsa-nav-global--fullscreen':''}">
           <div class="fsa-nav-global__bd">
             <ul class="fsa-nav-global__list" aria-label="Primary Navigation">`;
@@ -57,7 +57,7 @@ export function useTop(_projectLocation=null) {
       return h;
     } else {
       `<!-- Start Global Nav Component -->
-      <nav id="global-nav" class="dwc-overlay">
+      <nav id="dwc-${uuidv4()}" class="dwc-overlay">
         <div class="fsa-nav-global ${_layout=='fullscreen'?'fsa-nav-global--fullscreen':''}">
           <div class="fsa-nav-global__bd">
             <ul class="fsa-nav-global__list" aria-label="Primary Navigation">
@@ -118,11 +118,11 @@ export function useTop(_projectLocation=null) {
       </div>
     </div>`;
     if(_data != null || _data != ''){
-      h +=`<div class="dwc-overlay fsa-header-app ${layout=='fullscreen'?'fsa-header-app--fullscreen':''}" id="header-app">
+      h +=`<div class="dwc-overlay fsa-header-app ${layout=='fullscreen'?'fsa-header-app--fullscreen':''}" id="dwc-${uuidv4()}">
           <div class="fsa-header-app__bd">
             <div class="fsa-header-app__primary">
               <a class="fsa-header-app__home-link" href="#">
-                <span class="dwc-overlay fsa-header-app__app-name" id="header-app-program-name">
+                <span class="dwc-overlay fsa-header-app__app-name" id="dwc-${uuidv4()}">
                   <!-- Your Program Abbreviation and Name -->
                   <abbr class="fsa-header-app__app-abbr">${_data.programAbbr}</abbr>
                   <span class="fsa-header-app__app-full">${_data.programName}</span>
@@ -130,7 +130,7 @@ export function useTop(_projectLocation=null) {
                 </span>
               </a>
             </div>
-            <div class="dwc-overlay fsa-header-app__secondary" id="header-app-login">
+            <div class="dwc-overlay fsa-header-app__secondary" id="dwc-${uuidv4()}">
               <span class="fsa-header-app__profile">
                 <span class="fsa-header-app__profile-name">
                   <button class="fsa-btn fsa-btn--plain fsa-text-size--2 fsa-link:hover--white fsa-link:hover--underline" data-behavior="open-modal" aria-controls="demo-profile-modal" aria-expanded="false" type="button">
@@ -157,11 +157,11 @@ export function useTop(_projectLocation=null) {
       </header>`;
     } else {
     
-      h +=`<div class="dwc-overlay fsa-header-app" id="header-app">
+      h +=`<div class="dwc-overlay fsa-header-app" id="dwc-${uuidv4()}">
             <div class="fsa-header-app__bd">
               <div class="fsa-header-app__primary">
                 <a class="fsa-header-app__home-link" href="#">
-                  <span class="dwc-overlay fsa-header-app__app-name" id="header-app-program-name">
+                  <span class="dwc-overlay fsa-header-app__app-name" id="dwc-${uuidv4()}">
                     <!-- Your Program Abbreviation and Name -->
                     <abbr class="fsa-header-app__app-abbr">CPS</abbr>
                     <span class="fsa-header-app__app-full">Code Prototype Starter</span>
@@ -169,7 +169,7 @@ export function useTop(_projectLocation=null) {
                   </span>
                 </a>
               </div>
-              <div class="dwc-overlay fsa-header-app__secondary" id="header-app-login">
+              <div class="dwc-overlay fsa-header-app__secondary" id="dwc-${uuidv4()}">
                 <span class="fsa-header-app__profile">
                   <span class="fsa-header-app__profile-name">
                     <button class="fsa-btn fsa-btn--plain fsa-text-size--2 fsa-link:hover--white fsa-link:hover--underline" data-behavior="open-modal" aria-controls="demo-profile-modal" aria-expanded="false" type="button">
