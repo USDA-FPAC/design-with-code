@@ -13,6 +13,21 @@ import { useButtonGroup } from '@/_composables/Design-System/components/useButto
 const { getButtonGroup } = useButtonGroup();
 get['button-group'] = getButtonGroup;
 
+// Header
+import { useHeader } from '@/_composables/Design-System/components/useHeader';
+const { getHeader } = useHeader();
+get['header'] = getHeader;
+
+// Page Title
+import { usePageTitle } from '@/_composables/Design-System/components/usePageTitle';
+const { getPageTitle } = usePageTitle();
+get['page-title'] = getPageTitle;
+
+// Breadcrumbs
+import { useBreadcrumbs } from '@/_composables/Design-System/components/useBreadcrumbs';
+const { getBreadcrumbs } = useBreadcrumbs();
+get['breadcrumbs'] = getBreadcrumbs;
+
 // Checkbox
 import { useCheckbox } from "@/_composables/Design-System/components/useCheckbox";
 const { getCheckbox } = useCheckbox();
@@ -43,20 +58,50 @@ import { useSelect } from '@/_composables/Design-System/components/useSelect';
 const { getSelect } = useSelect();
 get['select'] = getSelect;
 
+// Select Field
+import { useSelectField } from '@/_composables/Design-System/components/useSelectField';
+const { getSelectField } = useSelectField();
+get['select-field'] = getSelectField;
+
+// Select Muliti Field
+import { useSelectMultiField } from '@/_composables/Design-System/components/useSelectMultiField';
+const { getSelectMultiField } = useSelectMultiField();
+get['select-multi-field'] = getSelectMultiField;
+
+// Select Muliti
+import { useSelectMulti } from '@/_composables/Design-System/components/useSelectMulti';
+const { getSelectMulti } = useSelectMulti();
+get['select-multi'] = getSelectMulti;
+
 // Slider
 import { useSlider } from '@/_composables/Design-System/components/useSlider';
 const { getSlider } = useSlider();
 get['slider'] = getSlider;
+
+// Slider Field
+import { useSliderField } from '@/_composables/Design-System/components/useSliderField';
+const { getSliderField } = useSliderField();
+get['slider-field'] = getSliderField;
 
 // Spinbox
 import { useSpinbox } from "@/_composables/Design-System/components/useSpinbox";
 const { getSpinbox } = useSpinbox();
 get['spinbox'] = getSpinbox;
 
+// Spinbox Field
+import { useSpinboxField } from "@/_composables/Design-System/components/useSpinboxField";
+const { getSpinboxField } = useSpinboxField();
+get['spinbox-field'] = getSpinboxField;
+
 // Text Input
 import { useTextInput } from '@/_composables/Design-System/components/useTextInput';
 const { getTextInput } = useTextInput();
 get['text-input'] = getTextInput;
+
+// Text Area
+import { useTextArea } from '@/_composables/Design-System/components/useTextArea';
+const { getTextArea } = useTextArea();
+get['text-area'] = getTextArea;
 
 // Stepped Controls
 import { useSteppedControls } from "@/_composables/Design-System/components/useSteppedControls";
@@ -88,17 +133,13 @@ export function useComponents(){
         obj: _obj
       }
     */
-    console.log('_methodName',_methodName);
-
     let newId = uuidv4();
     let component = ``;
     
     if(_methodName == 'remove '){
       component = get[_methodName](_data);
     } else {
-      
       component = `<div id="dwc-${newId}" class="dwc-overlay">`;
-      
       try{
         component += get[_methodName](_data);
       } catch(_err){

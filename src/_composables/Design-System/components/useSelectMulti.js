@@ -6,7 +6,7 @@ export function useSelectMulti(){
     let newId = String('dws-' + uuidv4());
     let groupName = uuidv4();
     
-    let component = `<div class="fsa-select-multi" id="${newId}">
+    let component = `<div class="fsa-select-multi ${_data.classes}" id="${newId}">
       <ul class="fsa-select-multi__list">
         <li class="fsa-select-multi__item">
           <input class="fsa-checkbox fsa-select-multi__check" id="${newId}-selectall" data-behavior="select-multi select-multi-all" type="checkbox" name="${newId}-selectall" value="ALL">

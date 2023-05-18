@@ -37,7 +37,7 @@
       CLASSES="fds-modal--top"
       TITLE="Add Properties"
       :NAME="methodName"
-      :USE_LIST="useList"
+      :SHOW_PROPERTIES="showProperties"
       @emitModalAdditions="handleModalAdditions"
     >
     </component-modal>
@@ -81,18 +81,8 @@ export default {
     const componentModalId = ref( uuidv4() );
     setModalId(componentModalId.value);
     const methodName = ref();
-    const useList = ref({
-      useType: false,
-      useClasses: true,
-      useLabel: true,
-      usePrompt: true,
-      usePlaceholder: true,
-      useName: true,
-      useHelp: true,
-      useIsRequired: true,
-      useIsSelected: true,
-      useJsonData: true
-    });
+    const dataObjHolder = ref({});
+    const showProperties = ref([]);
 
     let sourceDoc = ref();
 
@@ -121,7 +111,8 @@ export default {
         obj: _obj
       }
       */
-     console.log('Design.vue > handleUpdateCanvas > _data',_data)
+      dataObjHolder.value = _data.obj
+      //console.log('Design.vue > handleUpdateCanvas > _data',_data)
       
       if(_data.action=='onTemplateUpdate'){
         setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
@@ -130,10 +121,12 @@ export default {
       if(_data.action=='onComponentUpdate'){
         methodName.value = _data.methodName;
         let obj = _data.obj;
-        if(obj.hasOwnProperty('useConfig')){
-          let useConfig = obj.useConfig == "true" ? true : false;
-          
-          if(useConfig){
+        if(obj.hasOwnProperty('useModal')){
+          let useModal = obj.useModal == "true" ? true : false;
+
+          showProperties.value = obj.showProperties.split(',');
+
+          if(useModal){
             showModal(componentModalId.value);
           } else {
             setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
@@ -146,6 +139,17 @@ export default {
     }
 
     const handleModalAdditions = (_data) => {
+      // if the value exists, don't replace it
+      //console.log('handleModalAdditions > _data', _data)
+      let dataObj = _data.obj;
+      Object.keys(dataObj).forEach((key)=>{
+        if(dataObj[key] == '' || dataObj[key] == undefined ) {
+          if(dataObjHolder.value.hasOwnProperty(key)){
+            dataObj[key] = dataObjHolder.value[key];
+          } 
+        }
+      })
+      _data.obj = dataObj;
       setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
@@ -171,7 +175,7 @@ export default {
       componentModalId,
       handleModalAdditions,
       methodName,
-      useList
+      showProperties
     };
   }
 };

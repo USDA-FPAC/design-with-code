@@ -36,7 +36,9 @@ export function useQuickFind() {
         str += `${key}:${value}|`;
       }
 
-      newHTML += `<p><a class="fds-btn fds-btn--secondary" title="${kw}" onclick="event.preventDefault(); QFCallback('${str}');" href="">${item.display.charAt(0).toUpperCase() + item.display.slice(1)}</a></p>`;
+      newHTML += `<div class="fds-m-b--m"><a title="${kw}" onclick="event.preventDefault(); QFCallback('${str}');" href="">
+        <img class="fds-shadow--raised" src="/img/interface-controls/${item.img}" />
+      </a></div>`;
 
     });
     buildItemsHolder(newHTML);

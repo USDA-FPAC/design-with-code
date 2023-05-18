@@ -4,6 +4,7 @@ export function useSlider(){
 
   const getSlider =(_data) => {
     let newId = String('dws-' + uuidv4());
+    
     let component = `<input class="fsa-slider ${_data.classes}" id="${newId}" name="${newId}" type="range" min="${_data.min}" max="${_data.max}" value="${_data.val}" step="${_data.step}"></input>`
     return component;
   }

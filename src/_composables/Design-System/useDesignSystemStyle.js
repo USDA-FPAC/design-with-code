@@ -1,10 +1,13 @@
+
 import { useUtilities } from "@/_composables/useUtilities";
+import { useGrowlControls } from "../useGrowlControls";
 import { useTop } from '@/_composables/Design-System/page-areas/top';
 import { useBody } from "@/_composables/Design-System/page-areas/body";
 import { useTemplates } from "@/_composables/Design-System/layouts/useTemplates";
 import { useComponents } from "@/_composables/Design-System/useComponents";
 
 const { checkOnProd } = useUtilities();
+const { showErrorGrowl } = useGrowlControls();
 const projectLocation = checkOnProd() ? 'https://usda-fpac.github.io' : 'http://localhost:3000';
 const { getTop, getHeaderApp, getGlobalNav } = useTop(projectLocation);
 const { mainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom, frameScripts } = useBody(projectLocation);
@@ -120,46 +123,73 @@ export function useDesignSystemStyle(_frameId=null) {
     let doc = document.createElement('div');
     doc.innerHTML = allHtml;
 
-    let source = doc.querySelector(`#${selectedPanelId}`);
-    let srcStr = String(source.outerHTML);
-    let clips = allHtml.split(srcStr);
-    let level = ``;
-    //console.log('srcStr', srcStr);
+    console.log('_code', _code);
 
-    switch(_location){
-      case 'replace':
-        allHtml = clips.join(_code);
-        break;
+    try {
 
-      case 'above':
-        allHtml = clips[0] + _code + srcStr + clips[1];
-        break;
+      let source = doc.querySelector(`#${selectedPanelId}`);
+      let srcStr = String(source.outerHTML);
+      console.log('srcStr', srcStr);
 
-      case 'below':
-        allHtml = clips[0] + srcStr + _code + clips[1];
-        break;
+      let clips = allHtml.split(srcStr);
 
-      case 'left': 
-        level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
-        allHtml = clips[0] + level + clips[1];
-        break;
+      console.log('clips.length', clips.length);
 
-      case 'right':
-        level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
-        allHtml = clips[0] + level + clips[1];
-        break;
+      console.log('allHtml',allHtml)
+      let level = ``;
+      
 
-      case 'remove':
-        allHtml = clips[0] + clips[1];
-        break;
+      console.log('_location', _location);
 
-      default:
-        allHtml = clips.join(_code);
-    }
+      switch(_location){
+        case 'replace':
+          allHtml = clips.join(_code);
+          break;
 
-    doc.remove();
+        case 'above':
+          allHtml = clips[0] + _code + srcStr + clips[1];
+          break;
+
+        case 'below':
+          allHtml = clips[0] + srcStr + _code + clips[1];
+          break;
+
+        case 'left': 
+          level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
+          allHtml = clips[0] + level + clips[1];
+          break;
+
+        case 'right':
+          level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
+          allHtml = clips[0] + level + clips[1];
+          break;
+
+        case 'remove':
+          allHtml = clips[0] + clips[1];
+          break;
+
+        default:
+          allHtml = clips.join(_code);
+          break;
+      }
+
+      doc.remove();
     
-    return allHtml
+    } catch(_err){
+
+      showErrorGrowl({
+        extraClasses: 'fds-growl--error',
+        title: 'Selection Error',
+        useIcon: 'true',
+        iconPath: 'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z',
+        iconSizeClass: 'fds-icon--size-1',
+        useMessage: 'true',
+        message: 'Select an area or component on the Canvas'
+      });
+
+    }
+    
+    return allHtml;
   }
 
   const initCanvas = () => {

@@ -19,7 +19,7 @@
         <label :for="toggleAddRightId">Add Right</label>
       </span> -->
         
-        <div class="fds-level fds-m-t--m fds-m-b--s">
+        <div v-if="useMe.placement" class="fds-level fds-m-t--m fds-m-b--s">
           
           <span class="fds-m-r--s">
             Placement:
@@ -44,53 +44,53 @@
             
         </div>
 
-        <div v-if="useMe.useType" class="fds-field">
+        <div v-if="useMe.type" class="fds-field">
           <label class="fds-field__label" :for="labelId">Type </label>
           <input v-model="type" class="fds-input fds-field__item" :id="typeId" :name="typeId" aria-required="true" type="text">
         </div>
 
-        <div v-if="useMe.usePrompt" class="fds-field">
-          <label class="fds-field__label" :for="promptId">Prompt </label>
+        <div v-if="useMe.prompt" class="fds-field">
+          <label class="fds-field__label" :for="promptId">Prompt / Placeholder </label>
           <input v-model="prompt" class="fds-input fds-field__item" :id="promptId" :name="promptId" aria-required="true" type="text">
         </div>
 
-        <div v-if="useMe.useLabel" class="fds-field">
+        <div v-if="useMe.label" class="fds-field">
           <label class="fds-field__label" :for="labelId">Label </label>
           <input v-model="label" class="fds-input fds-field__item" :id="labelId" :name="labelId" aria-required="true" type="text">
         </div>
         
 
         <div class="fds-level">
-          <span v-if="useMe.useIsRequired" class="fds-level fds-level--inline">
+          <span v-if="useMe.required" class="fds-level fds-level--inline">
             <label class="fds-switch">
               <input @change="toggleRequired()" type="checkbox" class="fds-switch__checkbox" :id="isRequiredId" :name="isRequiredId">
               <span class="fds-switch__track"></span>
             </label>
             <label :for="isRequiredId">Required</label>
           </span>
-          <span v-if="useMe.useIsSelected" class="fds-level fds-level--inline">
+          <span v-if="useMe.preselected" class="fds-level fds-level--inline">
             <label class="fds-switch">
               <input @change="toggleSelected()" type="checkbox" class="fds-switch__checkbox" :id="isSelectedId" :name="isSelectedId">
               <span class="fds-switch__track"></span>
             </label>
-            <label :for="useMe.isSelectedId">Pre-selected</label>
+            <label :for="isSelectedId">Pre-selected</label>
           </span>
         </div>
 
-        <div v-if="useMe.useClasses" class="fds-field">
+        <div v-if="useMe.classes" class="fds-field">
           <label class="fds-field__label" :for="classesId">Classes </label>
           <input v-model="classes" class="fds-input fds-field__item" :id="classesId" :name="classesId" aria-required="false" type="text">
         </div>
 
-        <div v-if="useMe.useJsonData" class="fds-field">
+        <div v-if="useMe.json" class="fds-field">
           <label class="fds-field__label" :for="jsonDataId">JSON data </label>
           <textarea v-model="jsonData" class="fds-textarea fds-field__item" placeholder="JSON" :id="jsonDataId" aria-required="false" :name="jsonDataId"></textarea>
         </div>
 
 
-        <div v-if="useMe.useHelp" class="fds-field">
-          <label class="fds-field__label" :for="promptId">Help Text </label>
-          <input v-model="help" class="fds-input fds-field__item" :id="helpId" :name="promptId" aria-required="true" type="text">
+        <div v-if="useMe.help" class="fds-field">
+          <label class="fds-field__label" :for="helpId">Help Text </label>
+          <input v-model="help" class="fds-input fds-field__item" :id="helpId" :name="helpId" aria-required="true" type="text">
         </div>
 
         <button @click="addComponent()" class="fds-btn fds-btn--primary">Add Component</button>
@@ -111,27 +111,38 @@ export default {
     CLASSES: String,
     TITLE: String,
     NAME: String,
-    USE_LIST: Object
+    SHOW_PROPERTIES: Array
   },
 
   setup(props, {emit}) {
     const { hideModal } = useModalControls();
 
     const componentName = computed( ()=> props.NAME );
-    const modalId = computed( ()=> props.MODAL_ID );
-    const useList = computed( ()=> props.USE_LIST );
-    const useMe = ref({
-      useType: true,
-      useClasses: true,
-      useLabel: true,
-      usePrompt: false,
-      usePlaceholder: true,
-      useName: true,
-      useHelp: true,
-      useIsRequired: true,
-      useIsSelected: true,
-      useJsonData: false
-    });
+    const modalId = computed(()=> props.MODAL_ID );
+    const showProperties = computed(()=> props.SHOW_PROPERTIES );
+    const useMeDefault = {
+      placement: false,
+      type: false,
+      classes: false,
+      label: false,
+      prompt: false,
+      placeholder: false,
+      name: false,
+      disabled: false,
+      help: false,
+      required: false,
+      preselected: false,
+      json: false
+    };
+    const useMe = ref(useMeDefault);
+
+    const updateFields = (_arr) => {
+      useMe.value = useMeDefault;
+      _arr.forEach((key)=>{
+        if(useMe.value.hasOwnProperty(key)) useMe.value[key] = true;
+      });    
+    }
+
     const cName = ref();
 
     const classes = ref('');
@@ -183,9 +194,7 @@ export default {
     const jsonData = ref();
     const jsonDataId = ref(uuidv4());
 
-    const arr = ref ([
-      { label: 'TEST', isChecked: false, isRequired: false }
-    ]);
+    const arr = ref ();
 
 
     const addComponent = () => {
@@ -194,7 +203,7 @@ export default {
       d.label = label.value;
       d.classes = classes.value;
       d.prompt = prompt.value;
-      d.isRequired = isRequired.value == 'true' ? true : false;
+      d.isRequired = isRequired.value; //== 'true' ? true : false;
       d.help = help.value;
       d.type = type.value;
       d.iconOnly = iconOnly.value == 'true' ? true : false;
@@ -242,10 +251,11 @@ export default {
       primaryLabel.value = 'Continue';
       secondaryLabel.value = 'Previous';
       jsonData.value = null;
+      useMe.value = useMeDefault;
     }
 
-    const toggleRequired = () => { isRequired.value = isRequired.value=='true'?'true':'false' }
-    const toggleSelected = () => { isSelected.value = isSelected.value=='true'?'true':'false' }
+    const toggleRequired = () => { isRequired.value = isRequired.value=='true'?'false':'true' }
+    const toggleSelected = () => { isSelected.value = isSelected.value=='true'?'false':'true' }
 
     const placementLocation = ref('replace');
   
@@ -281,9 +291,9 @@ export default {
     }
 
 
-    watch([componentName, useList], (value1, value2) => {
-      cName.value = value1[0];
-      useMe.value = value2[1];
+    watch([componentName, showProperties], (value) => {
+      cName.value = value[0];
+      updateFields( value[1] );
     });
 
     onMounted(()=>{
