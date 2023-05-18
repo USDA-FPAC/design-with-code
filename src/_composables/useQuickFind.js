@@ -47,7 +47,10 @@ export function useQuickFind() {
 
   const buildItemsHolder = (_newHTML) => { resultsHolder.innerHTML = _newHTML };
 
-  const getDefaultItems = () => { return itemsArray.filter( item => item.isDefault == "true" ? true : false) };
+  const getDefaultItems = () => { 
+    //return itemsArray.filter( item => item.isDefault == "true" ? true : false)
+    return itemsArray;
+  };
 
 
   const doSearch = ( _phrase ) => {

@@ -157,7 +157,7 @@
       "display": "Slider Field",
       "isDefault": "true",
       "useModal": "true",
-      "showProperties": ["placement","prompt","label","required","disabled","classes","help"],
+      "showProperties": ["placement","label","required","disabled","classes","help"],
       "keywords": "all, slider, range, dial, form, field"
     },
     {
