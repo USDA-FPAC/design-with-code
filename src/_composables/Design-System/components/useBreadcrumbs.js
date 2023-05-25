@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useBreadcrumbs(){
 
   const getBreadcrumbs =(_data) => {
-    let newId = String('dws-' + uuidv4());
+    let newId = String('dwc-' + uuidv4());
     
     let component = `<div class="fsa-breadcrumb" id="${newId}">
       <nav class="fsa-breadcrumb__nav" aria-label="Breadcrumbs">

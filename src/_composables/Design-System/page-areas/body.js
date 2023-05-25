@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 export function useBody(_projectLocation=null){
-  let mainTop = `
-  <main id="main-content" tabindex="-1">
-    <div class="fsa-section">
-      <div class="fsa-section__bd">`;
+  const getMainTop = (_layout=null) =>{
+    return `<main id="main-content" tabindex="-1">
+    <div class="fsa-section ${_layout=='fullscreen'? 'fsa-section--fullscreen':''}">
+      <div class="fsa-section__bd">`
+  };
 
   const steppedTabs = `<div id="dwc-${uuidv4()}" class="dwc-overlay">
     <nav aria-label="Breadcrumbs">
@@ -85,18 +86,25 @@ export function useBody(_projectLocation=null){
   window.addEventListener('load',()=>{ window.top.postMessage('handshake', '${_projectLocation}') });
   window.addEventListener('message',(_evt)=>{ console.log('message from Parent',_evt.data) });
   let clickAreas = document.querySelectorAll('.dwc-overlay');
+  function removeAllSelected(){
+    clickAreas.forEach( item => {
+      item.classList.remove('dwc-selected');
+    });
+  }
   clickAreas.forEach( item => {
     item.addEventListener('click', (_e) => {
       _e.preventDefault();
       _e.stopPropagation();
+      removeAllSelected();
       let el = _e.currentTarget;
+      el.classList.add('dwc-selected');
       window.top.postMessage(el.id, '${_projectLocation}');
     });
   });
   </script>`;
 
   return {
-    mainTop,
+    getMainTop,
     steppedTabs,
     headerArea,
     bodyInit,

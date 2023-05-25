@@ -10,7 +10,7 @@ const { checkOnProd } = useUtilities();
 const { showErrorGrowl } = useGrowlControls();
 const projectLocation = checkOnProd() ? 'https://usda-fpac.github.io' : 'http://localhost:3000';
 const { getTop, getHeaderApp, getGlobalNav } = useTop(projectLocation);
-const { mainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom, frameScripts } = useBody(projectLocation);
+const { getMainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom, frameScripts } = useBody(projectLocation);
 const { getTemplate } = useTemplates(projectLocation);
 const { getComponent } = useComponents(projectLocation);
 
@@ -198,7 +198,7 @@ export function useDesignSystemStyle(_frameId=null) {
     //panels[selectedPanelId] = _code;
     allHtml = getTop( { css: programData.css } );
     allHtml += panels['header-app']( programData );
-    allHtml += mainTop;
+    allHtml += getMainTop();
     allHtml += panels['stepped-tabs'];
     allHtml += panels['page-header'];
     allHtml += panels['main-app-area'];
@@ -225,7 +225,7 @@ export function useDesignSystemStyle(_frameId=null) {
     } 
     /////
     if(_task.cmd=='updateCanvas') {
-      if(selectedPanelId != ''){
+      if(selectedPanelId != '' || _payload.action != 'onComponentUpdate'){
         let app = updateCanvas(_payload);
         h = setHistory(app);
       } else {

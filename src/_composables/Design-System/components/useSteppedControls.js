@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export function useSteppedControls(){
 
   const getSteppedControls =(_data) => {
-    let newId = String('dws-' + uuidv4());
+    let newId = String('dwc-' + uuidv4());
     let classes = 'fsa-stepped-control__item--';
     if(_data.directional) classes += 'pull';
     else classes += 'push';

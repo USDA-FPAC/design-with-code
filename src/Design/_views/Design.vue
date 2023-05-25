@@ -112,7 +112,7 @@ export default {
       }
       */
       dataObjHolder.value = _data.obj
-      //console.log('Design.vue > handleUpdateCanvas > _data',_data)
+      console.log('Design.vue > handleUpdateCanvas > _data',_data)
       
       if(_data.action=='onTemplateUpdate'){
         setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
