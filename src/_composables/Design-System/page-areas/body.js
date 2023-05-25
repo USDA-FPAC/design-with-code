@@ -5,10 +5,9 @@ export function useBody(_projectLocation=null){
     <div class="fsa-section">
       <div class="fsa-section__bd">`;
 
-  let steppedTabs = `<!-- Stepped Tabs -->
-  <div id="dwc-${uuidv4()}" class="dwc-overlay">
+  const steppedTabs = `<div id="dwc-${uuidv4()}" class="dwc-overlay">
     <nav aria-label="Breadcrumbs">
-      <div class="fsa-m-t--l" class="fsa-stepped-tabs">
+      <div class="fsa-m-t--l fsa-stepped-tabs">
         <div class="fsa-stepped-tabs__bd">
           <ol class="fsa-stepped-tabs__list">
             <li class="fsa-stepped-tabs__item">
@@ -35,8 +34,7 @@ export function useBody(_projectLocation=null){
         </div>
       </div>
     </nav>
-  </div>
-  <!-- End Stepped Tabs -->`;
+  </div>`;
 
   const headerArea = `<div id="dwc-${uuidv4()}" class="dwc-overlay fsa-m-b--m fsa-level fsa-level--justify-between fsa-level--align-bottom">
     <div>

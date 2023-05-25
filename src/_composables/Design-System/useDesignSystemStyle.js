@@ -112,7 +112,7 @@ export function useDesignSystemStyle(_frameId=null) {
         if(block.type=='rawHtml') code += data.html;
       });
       //allHtml += bodyArea + steppedControls + mainBottom + frameScripts;
-      allHtml = rebuildCanvas( code );
+      allHtml = rebuildCanvas( obj.placementLocation, code );
     }
     
     return allHtml;
@@ -123,73 +123,75 @@ export function useDesignSystemStyle(_frameId=null) {
     let doc = document.createElement('div');
     doc.innerHTML = allHtml;
 
+    console.log('_location', _location);
     console.log('_code', _code);
 
     try {
 
       let source = doc.querySelector(`#${selectedPanelId}`);
       let srcStr = String(source.outerHTML);
-      console.log('srcStr', srcStr);
+      //console.log('srcStr', srcStr);
 
-      let clips = allHtml.split(srcStr);
+      if( allHtml.indexOf(srcStr) > -1) {
+        
+        let clips = allHtml.split(srcStr);
+        //console.log('clips.length', clips.length);
 
-      console.log('clips.length', clips.length);
+        //console.log('allHtml',allHtml)
+        let level = ``;
 
-      console.log('allHtml',allHtml)
-      let level = ``;
-      
+        switch(_location){
+          case 'replace':
+            allHtml = clips.join(_code);
+            break;
 
-      console.log('_location', _location);
+          case 'above':
+            allHtml = clips[0] + _code + srcStr + clips[1];
+            break;
 
-      switch(_location){
-        case 'replace':
-          allHtml = clips.join(_code);
-          break;
+          case 'below':
+            allHtml = clips[0] + srcStr + _code + clips[1];
+            break;
 
-        case 'above':
-          allHtml = clips[0] + _code + srcStr + clips[1];
-          break;
+          case 'left': 
+            level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
+            allHtml = clips[0] + level + clips[1];
+            break;
 
-        case 'below':
-          allHtml = clips[0] + srcStr + _code + clips[1];
-          break;
+          case 'right':
+            level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
+            allHtml = clips[0] + level + clips[1];
+            break;
 
-        case 'left': 
-          level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
-          allHtml = clips[0] + level + clips[1];
-          break;
+          case 'remove':
+            allHtml = clips[0] + clips[1];
+            break;
 
-        case 'right':
-          level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
-          allHtml = clips[0] + level + clips[1];
-          break;
+          default:
+            allHtml = clips.join(_code);
+            break;
+        }
 
-        case 'remove':
-          allHtml = clips[0] + clips[1];
-          break;
-
-        default:
-          allHtml = clips.join(_code);
-          break;
+      } else {
+        showNotFoundError();
       }
 
       doc.remove();
+      selectedPanelId = '';
     
     } catch(_err){
-
-      showErrorGrowl({
-        extraClasses: 'fds-growl--error',
-        title: 'Selection Error',
-        useIcon: 'true',
-        iconPath: 'M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z',
-        iconSizeClass: 'fds-icon--size-1',
-        useMessage: 'true',
-        message: 'Select an area or component on the Canvas'
-      });
-
+      showNotFoundError(_err);
     }
     
     return allHtml;
+  }
+
+  const showNotFoundError = (_err = null) => {
+    let err = _err || '';
+    showErrorGrowl({
+      title: 'Selection Error',
+      msg: 'Select an area or component on the Canvas. ' + err
+    });
   }
 
   const initCanvas = () => {
@@ -209,6 +211,7 @@ export function useDesignSystemStyle(_frameId=null) {
 
   const updateSource = (_task, _payload, _init=null) => {
     ///// Initialize /////
+    let h = ``;
     if(_init){
       let arr = [{ id:'init', type:'rawHtml', data: {html:bodyInit} }];
       /* let app = updateCanvas({
@@ -217,13 +220,17 @@ export function useDesignSystemStyle(_frameId=null) {
         obj: { arr: arr }
       }); */
       let initApp = initCanvas();
-      let h = setHistory(initApp);
+      h = setHistory(initApp);
       return h;
     } 
     /////
     if(_task.cmd=='updateCanvas') {
-      let app = updateCanvas(_payload);
-      let h = setHistory(app);
+      if(selectedPanelId != ''){
+        let app = updateCanvas(_payload);
+        h = setHistory(app);
+      } else {
+        h = appHistory[version];
+      }
       return h;
     }
     if(_task.cmd=='undo') return undo();

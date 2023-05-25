@@ -144,6 +144,7 @@ export function useGrowlControls() {
   }
 
   const showErrorGrowl = (_obj) => {
+    //console.log('showErrorGrowl',_obj)
     let alertObj = {
       id: String( uuidv4() ),
       extraClasses: 'fds-growl--error',
@@ -154,6 +155,7 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
+    console.log('showErrorGrowl',alertObj)
     store.dispatch('alerts/addAlert', alertObj);
   }
 
