@@ -3,93 +3,343 @@
     {
       "uid": "button-id",
       "name": "button",
+      "img": "button.png",
       "display": "Button",
       "isDefault": "true",
-      "keywords": "button, buttons, button group"
+      "useModal": "true",
+      "showProperties": ["placement","label","disabled","prompt","classes"],
+      "keywords": "all, button, buttons, button group"
     },
     {
       "uid": "button-group-id",
       "name": "button-group",
+      "img": "button-group.png",
       "display": "Button Group",
       "isDefault": "true",
-      "keywords": "button, buttons, button group, filter, toggle"
+      "useModal": "true",
+      "showProperties": ["placement","label","disabled","classes","json"],
+      "keywords": "all, button, buttons, button group, filter, toggle"
+    },
+    {
+      "uid": "header-id",
+      "name": "header",
+      "img": "header.png",
+      "display": "Header",
+      "isDefault": "true",
+      "useModal": "true",
+      "showProperties": ["placement","label","type","classes"],
+      "keywords": "all, header, headers, title, page title"
+    },
+    {
+      "uid": "page-title-id",
+      "name": "page-title",
+      "img": "page-title.png",
+      "display": "Page Title",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement","label","classes","json"],
+      "keywords": "all, page title, title, header"
+    },
+    {
+      "uid": "breadcrumbs-id",
+      "name": "breadcrumbs",
+      "img": "breadcrumbs.png",
+      "display": "Breadcrumbs",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement","label","json"],
+      "keywords": "all, breadcrumbs, bread crumbs, page title, title, header"
     },
     {
       "uid": "checkbox-id",
       "name": "checkbox",
+      "img": "checkbox.png",
       "display": "Solo Checkbox",
       "isDefault": "false",
-      "keywords": "checkbox group, checkbox, toggle, radio group"
+      "useModal": "true",
+      "showProperties": ["placement","label","preselected","disabled","classes","help"],
+      "keywords": "all, checkbox group, checkbox, toggle, radio group, form"
     },
     {
       "uid": "checkbox-group-id",
       "name": "checkbox-group",
+      "img": "checkbox-group.png",
       "display": "Checkbox Group",
       "isDefault": "true",
-      "keywords": "checkbox group, checkbox, toggle, radio group"
+      "useModal": "true",
+      "showProperties": ["placement","disabled","classes","json"],
+      "keywords": "all, checkbox group, checkbox, toggle, radio group, form"
     },
     {
       "uid": "radio-group-id",
       "name": "radio-group",
+      "img": "radio-group.png",
       "display": "Radio Group",
       "isDefault": "true",
-      "keywords": "radio group, checkbox group"
+      "useModal": "true",
+      "showProperties": ["placement","disabled","classes","json"],
+      "keywords": "all, radio group, checkbox group, form"
     },
     {
       "uid": "form-field-id",
       "name": "form-field",
+      "img": "form-field.png",
       "display": "Form Field",
       "isDefault": "true",
-      "keywords": "form field, input, form, text box"
+      "useModal": "true",
+      "showProperties": ["placement", "prompt","label","required","disabled","classes","help"],
+      "keywords": "all, form field, input, form, text box"
     },
     {
       "uid": "search-id",
       "name": "search",
+      "img": "search.png",
       "display": "Search",
       "isDefault": "false",
-      "keywords": "search, input, text box"
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","disabled","classes"],
+      "keywords": "all, search, input, text box"
     },
     {
       "uid": "select-id",
       "name": "select",
+      "img": "select.png",
       "display": "Select",
       "isDefault": "true",
-      "keywords": "select, dropdown, select menu, menu"
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","required","disabled","classes","json","help"],
+      "keywords": "all, select, dropdown, select menu, menu, form"
+    },
+    {
+      "uid": "select-field-id",
+      "name": "select-field",
+      "img": "select-field.png",
+      "display": "Select Field",
+      "isDefault": "true",
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","required","disabled","classes","json","help"],
+      "keywords": "all, select, select field, dropdown, select menu, menu, form, field"
+    },
+    {
+      "uid": "select-multi-id",
+      "name": "select-multi",
+      "img": "select-multi.png",
+      "display": "Select Multi",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","required","disabled","classes","json","help"],
+      "keywords": "all, select, select multi, multiple select, selectmulti, dropdown, select menu, menu, form"
+    },
+    {
+      "uid": "select-multi-field-id",
+      "name": "select-multi-field",
+      "img": "select-multi-field.png",
+      "display": "Select Multi Field",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","required","disabled","classes","json","help"],
+      "keywords": "all, select, select multi, multiple select, selectmulti, select field, field, dropdown, select menu, menu, form"
     },
     {
       "uid": "slider-id",
       "name": "slider",
+      "img": "slider.png",
       "display": "Slider",
       "isDefault": "false",
-      "keywords": "slider, range"
+      "useModal": "true",
+      "showProperties": ["placement","label","disabled","classes"],
+      "keywords": "all, slider, range, form"
+    },
+    {
+      "uid": "slider-field-id",
+      "name": "slider-field",
+      "img": "slider-field.png",
+      "display": "Slider Field",
+      "isDefault": "true",
+      "useModal": "true",
+      "showProperties": ["placement","label","required","disabled","classes","help"],
+      "keywords": "all, slider, range, dial, form, field"
     },
     {
       "uid": "spinbox-id",
       "name": "spinbox",
+      "img": "spinbox.png",
       "display": "Spinbox",
       "isDefault": "false",
-      "keywords": "spinbox, number box"
+      "useModal": "true",
+      "showProperties": ["placement","label","disabled","classes"],
+      "keywords": "all, spinbox, number box, form"
+    },
+    {
+      "uid": "spinbox-field-id",
+      "name": "spinbox-field",
+      "img": "spinbox-field.png",
+      "display": "Spinbox Field",
+      "isDefault": "true",
+      "useModal": "true",
+      "showProperties": ["placement","prompt","label","required","disabled","classes","json","help"],
+      "keywords": "all, spinbox, number box, form, field"
     },
     {
       "uid": "text-input-id",
       "name": "text-input",
+      "img": "text-input.png",
       "display": "Text Input",
       "isDefault": "true",
-      "keywords": "text input, form field, text box"
+      "useModal": "true",
+      "showProperties": ["placement","prompt","disabled","classes"],
+      "keywords": "all, text input, form field, text box, form"
     },
     {
-      "uid": "stepped-control-id",
-      "name": "stepped-control",
-      "display": "Stepped Control",
+      "uid": "text-area-id",
+      "name": "text-area",
+      "img": "text-area.png",
+      "display": "Text Area",
       "isDefault": "true",
-      "keywords": "text input, form field, text box"
+      "useModal": "true",
+      "showProperties": ["placement", "prompt","label","required","disabled","classes","help"],
+      "keywords": "all, text area, textarea, text input, form field, text box, form"
+    },
+    {
+      "uid": "stepped-controls-id",
+      "name": "stepped-controls",
+      "img": "stepped-controls.png",
+      "display": "Stepped Controls",
+      "isDefault": "true",
+      "useModal": "true",
+      "showProperties": ["placement","prompt","classes","json","help"],
+      "keywords": "all, step, steps, stepped control, stepped controls, stepped tab, stepped tabs, process flow, stepped process"
     },
     {
       "uid": "switch-id",
       "name": "switch",
+      "img": "switch.png",
       "display": "Switch",
       "isDefault": "false",
-      "keywords": "switch, toggle, checkbox, radio"
+      "useModal": "true",
+      "showProperties": ["placement","label","preselected","disabled","classes"],
+      "keywords": "all, switch, toggle, checkbox, radio, form"
+    },
+    {
+      "uid": "grid-1-id",
+      "name": "grid",
+      "type": "grid-1",
+      "img": "grid-1.png",
+      "display": "Grid 1",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1",
+      "img": "grid-1-1.png",
+      "display": "Grid 2 (1-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1-1",
+      "img": "grid-1-1-1.png",
+      "display": "Grid 3 (1-1-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-2-1-id",
+      "name": "grid",
+      "type": "grid-2-1",
+      "img": "grid-2-1.png",
+      "display": "Grid 3 (2-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-id",
+      "name": "grid",
+      "type": "grid-1-2",
+      "img": "grid-1-2.png",
+      "display": "Grid 3 (1-2)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-1-1-id",
+      "name": "grid",
+      "type": "grid-1-1-1-1",
+      "img": "grid-1-1-1-1.png",
+      "display": "Grid 4 (1-1-1-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-2-1-1-id",
+      "name": "grid",
+      "type": "grid-2-1-1",
+      "img": "grid-2-1-1.png",
+      "display": "Grid 4 (2-1-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-1-2-id",
+      "name": "grid",
+      "type": "grid-1-1-2",
+      "img": "grid-1-1-2.png",
+      "display": "Grid 4 (1-1-2)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-3-1-id",
+      "name": "grid",
+      "type": "grid-3-1",
+      "img": "grid-3-1.png",
+      "display": "Grid 4 (3-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-3-id",
+      "name": "grid",
+      "type": "grid-1-3",
+      "img": "grid-1-3.png",
+      "display": "Grid 4 (1-3)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
+    },
+    {
+      "uid": "grid-1-2-1-id",
+      "name": "grid",
+      "type": "grid-1-2-1",
+      "img": "grid-1-2-1.png",
+      "display": "Grid 4 (1-2-1)",
+      "isDefault": "false",
+      "useModal": "true",
+      "showProperties": ["placement"],
+      "keywords": "all, grid, grid system, layout"
     }
   ]
 }

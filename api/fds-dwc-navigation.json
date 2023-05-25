@@ -11,6 +11,16 @@
       "hasChild": "false"
     },
     {
+      "uid": "export-id",
+      "label": "Export",
+      "path": "/export",
+      "icon": {
+        "class": "fds-icon fds-icon--size-2",
+        "path": "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"
+      },
+      "hasChild": "false"
+    },
+    {
       "uid": "settings-id",
       "label": "Settings",
       "path": "/settings",
