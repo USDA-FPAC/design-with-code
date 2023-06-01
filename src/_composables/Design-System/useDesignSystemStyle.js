@@ -69,6 +69,8 @@ export function useDesignSystemStyle(store, _frameId=null) {
     if(version < appHistory.length ) store.dispatch('design/setRedoEnabled', true);
     else store.dispatch('design/setRedoEnabled', false);
 
+    store.dispatch('design/setDeleteEnabled', false);
+
     return appHistory[version - 1];
   }
 
@@ -92,6 +94,8 @@ export function useDesignSystemStyle(store, _frameId=null) {
         obj: _obj
       }
     */
+      console.log('_payload >> ',_payload);
+      
     let action = _payload.action;
     let obj = {};
     let methodName = '';
@@ -138,7 +142,7 @@ export function useDesignSystemStyle(store, _frameId=null) {
 
       let source = doc.querySelector(`#${selectedPanelId}`);
       let srcStr = String(source.outerHTML);
-      //console.log('srcStr', srcStr);
+      console.log('srcStr', srcStr);
 
       if( allHtml.indexOf(srcStr) > -1) {
         
