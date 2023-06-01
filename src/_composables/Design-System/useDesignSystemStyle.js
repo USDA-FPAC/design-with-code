@@ -53,14 +53,21 @@ export function useDesignSystemStyle(store, _frameId=null) {
   }
 
   const handleComms = (_id, _frameId=null) => { 
-    console.log('panel selected :: ', _id)
-    if(_id != 'handshake') store.dispatch('design/setDeleteEnabled', true);
-    selectedPanelId = _id;
+    if(_id != 'handshake') {
+      console.log('panel selected :: ', _id)
+      store.dispatch('design/setDeleteEnabled', true);
+      selectedPanelId = _id;
+    } else {
+      console.log('~~ logging Init Handshake ~~')
+    }
   }
 
   const setHistory = (_app, _v=null) => {
     version = _v ? _v : appHistory.length+1;
+
     appHistory[version - 1] = {version: version, app: _app};
+    // adding _app to allHtml to fix bug
+    allHtml = _app;
 
     // control interface
     if(version > 1) store.dispatch('design/setUndoEnabled', true);
@@ -70,18 +77,21 @@ export function useDesignSystemStyle(store, _frameId=null) {
     else store.dispatch('design/setRedoEnabled', false);
 
     store.dispatch('design/setDeleteEnabled', false);
+    //console.log('appHistory __ ',appHistory)
 
     return appHistory[version - 1];
   }
 
   const undo = (_v=null) => {
     let v = _v ? _v : version-1;
+    //console.log('undo() ',v)
     let state = appHistory.find(item => item.version == v);
     return setHistory(state.app, v);
   }
 
   const redo = (_v=null) => {
     let v = _v ? _v : version + 1;
+    //console.log('redo() ',v)
     let state = appHistory.find(item => item.version == v);
     return setHistory(state.app, v);
   }
@@ -94,7 +104,7 @@ export function useDesignSystemStyle(store, _frameId=null) {
         obj: _obj
       }
     */
-      console.log('_payload >> ',_payload);
+    //console.log('CALLING > updateCanvas > _payload >> ',_payload);
       
     let action = _payload.action;
     let obj = {};
@@ -131,18 +141,19 @@ export function useDesignSystemStyle(store, _frameId=null) {
     return allHtml;
   };
 
+
   const rebuildCanvas = (_location, _code) => {
     //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
     let doc = document.createElement('div');
     doc.innerHTML = allHtml;
-
-    console.log('_location', _location);
+    console.log('doc__ ', doc);
 
     try {
 
       let source = doc.querySelector(`#${selectedPanelId}`);
+      //console.log('source__ ', source)
       let srcStr = String(source.outerHTML);
-      console.log('srcStr', srcStr);
+      //console.log('srcStr__ ', srcStr);
 
       if( allHtml.indexOf(srcStr) > -1) {
         
@@ -183,6 +194,8 @@ export function useDesignSystemStyle(store, _frameId=null) {
         }
 
       } else {
+
+        console.log(_err)
         showNotFoundError();
       }
 
@@ -190,7 +203,9 @@ export function useDesignSystemStyle(store, _frameId=null) {
       selectedPanelId = '';
     
     } catch(_err){
-      showNotFoundError(_err);
+      
+      console.log(_err)
+      //showNotFoundError(_err);
     }
     
     return allHtml;

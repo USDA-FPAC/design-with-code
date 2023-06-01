@@ -35,7 +35,6 @@ const actions = {
   },
 
   setDeleteEnabled( { commit, state, rootState } , _payload){
-    console.log('setDeleteEnabled', _payload)
     commit('SET_DELETE_ENABLED', _payload);
   },
 
