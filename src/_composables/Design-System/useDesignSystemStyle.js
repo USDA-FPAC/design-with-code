@@ -14,7 +14,7 @@ const { getMainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBott
 const { getTemplate } = useTemplates(projectLocation);
 const { getComponent } = useComponents(projectLocation);
 
-export function useDesignSystemStyle(_frameId=null) {
+export function useDesignSystemStyle(store, _frameId=null) {
   
   let allHtml = '';
   let frameId = _frameId;
@@ -54,12 +54,21 @@ export function useDesignSystemStyle(_frameId=null) {
 
   const handleComms = (_id, _frameId=null) => { 
     console.log('panel selected :: ', _id)
+    if(_id != 'handshake') store.dispatch('design/setDeleteEnabled', true);
     selectedPanelId = _id;
   }
 
   const setHistory = (_app, _v=null) => {
     version = _v ? _v : appHistory.length+1;
     appHistory[version - 1] = {version: version, app: _app};
+
+    // control interface
+    if(version > 1) store.dispatch('design/setUndoEnabled', true);
+    else store.dispatch('design/setUndoEnabled', false);
+
+    if(version < appHistory.length ) store.dispatch('design/setRedoEnabled', true);
+    else store.dispatch('design/setRedoEnabled', false);
+
     return appHistory[version - 1];
   }
 
@@ -124,7 +133,6 @@ export function useDesignSystemStyle(_frameId=null) {
     doc.innerHTML = allHtml;
 
     console.log('_location', _location);
-    console.log('_code', _code);
 
     try {
 
@@ -136,8 +144,6 @@ export function useDesignSystemStyle(_frameId=null) {
         
         let clips = allHtml.split(srcStr);
         //console.log('clips.length', clips.length);
-
-        //console.log('allHtml',allHtml)
         let level = ``;
 
         switch(_location){
@@ -231,11 +237,14 @@ export function useDesignSystemStyle(_frameId=null) {
       } else {
         h = appHistory[version];
       }
+
+      store.dispatch('design/setDeleteEnabled', false);
       return h;
     }
     if(_task.cmd=='undo') return undo();
     if(_task.cmd=='undo-version') return undo(_task.data);
     if(_task.cmd=='redo') return redo();
+
   }
 
 

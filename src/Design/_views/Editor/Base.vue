@@ -10,17 +10,17 @@
           Save
         </button> -->
 
-        <button @click="remove()" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
+        <button @click="remove()" :disabled="isDeleteEnabled ? 0:1" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
           <svg class="fsa-icon fsa-icon--size-2" aria-hidden="true" focusable="false" role="img" fill="#205493" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
         </button>
 
-        <button @click="undo()" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
+        <button @click="undo()" :disabled="isUndoEnabled ? 0:1" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
           <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" fill="#205493" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"></path>
           </svg>
         </button>
 
-        <button @click="redo()" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
+        <button @click="redo()" :disabled="isRedoEnabled ? 0:1" class="fds-btn fds-btn--secondary fds-btn--small fds-m-r--xs" type="button">
           <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" fill="#205493" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"></path>
           </svg>
@@ -126,6 +126,14 @@ export default {
       } */
     ]);
 
+    const deleteEnabled = computed(()=>{ return store.getters['design/getDeleteEnabled'] });
+    const isDeleteEnabled = ref();
+    const undoEnabled = computed(()=>{ return store.getters['design/getUndoEnabled'] });
+    const isUndoEnabled = ref();
+    const redoEnabled = computed(()=>{ return store.getters['design/getRedoEnabled'] });
+    const isRedoEnabled = ref();
+
+
     let childInterface = () => {};
     const getChildInterface = (_interface) => childInterface = _interface;
     const saveCode = () => {
@@ -159,9 +167,16 @@ export default {
       console.log('_obj.id',_obj.id)
     }
 
+    watch([deleteEnabled, undoEnabled, redoEnabled], ( curr, prev)=>{
+      isDeleteEnabled.value = curr[0],
+      isUndoEnabled.value = curr[1],
+      isRedoEnabled.value = curr[2]
+    })
 
     onMounted(()=>{
-
+      store.dispatch('design/setDeleteEnabled', false);
+      store.dispatch('design/setUndoEnabled', false);
+      store.dispatch('design/setRedoEnabled', false);
     });
 
     return {
@@ -176,7 +191,10 @@ export default {
       codeContainerId,
       codeContainerRef,
       getChildInterface,
-      updateCanvas
+      updateCanvas,
+      isDeleteEnabled,
+      isUndoEnabled,
+      isRedoEnabled
     };
   }
 };

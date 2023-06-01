@@ -72,7 +72,7 @@ export default {
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
-    const { updateSource, listenToFrame } = useDesignSystemStyle(String(iFrameId.value));
+    const { updateSource, listenToFrame } = useDesignSystemStyle(store, String(iFrameId.value));
     const {
       setModalId,
       showModal,
