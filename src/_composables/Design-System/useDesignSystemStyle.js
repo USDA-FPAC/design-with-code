@@ -1,4 +1,4 @@
-
+import { v4 as uuidv4 } from "uuid";
 import { useUtilities } from "@/_composables/useUtilities";
 import { useGrowlControls } from "../useGrowlControls";
 import { useTop } from '@/_composables/Design-System/page-areas/top';
@@ -149,11 +149,11 @@ export function useDesignSystemStyle(store, _frameId=null) {
     console.log('doc__ ', doc);
 
     try {
-
+      let newId = String('dwc-' + uuidv4());
       let source = doc.querySelector(`#${selectedPanelId}`);
-      //console.log('source__ ', source)
+      console.log('source__ ', source)
       let srcStr = String(source.outerHTML);
-      //console.log('srcStr__ ', srcStr);
+      console.log('srcStr__ ', srcStr);
 
       if( allHtml.indexOf(srcStr) > -1) {
         
@@ -175,12 +175,12 @@ export function useDesignSystemStyle(store, _frameId=null) {
             break;
 
           case 'left': 
-            level = `<div class="fsa-level"><span>${_code}</span><span>${srcStr}</span></div>`;
+            level = `<div id="${newId}" class="dwc-overlay fsa-level fsa-level--gutter-m"><span>${_code}</span><span>${srcStr}</span></div>`;
             allHtml = clips[0] + level + clips[1];
             break;
 
           case 'right':
-            level = `<div class="fsa-level"><span>${srcStr}</span><span>${_code}</span></div>`;
+            level = `<div id="${newId}" class="dwc-overlay fsa-level fsa-level--gutter-m"><span>${srcStr}</span><span>${_code}</span></div>`;
             allHtml = clips[0] + level + clips[1];
             break;
 
@@ -194,8 +194,6 @@ export function useDesignSystemStyle(store, _frameId=null) {
         }
 
       } else {
-
-        console.log(_err)
         showNotFoundError();
       }
 

@@ -37,7 +37,7 @@ export function useQuickFind() {
       }
 
       newHTML += `<div class="fds-m-b--m"><a title="${kw}" onclick="event.preventDefault(); QFCallback('${str}');" href="">
-        <img class="fds-shadow--raised" src="/img/interface-controls/${item.img}" />
+        <img class="fds-shadow--raised" src="./img/interface-controls/${item.img}" />
       </a></div>`;
 
     });
