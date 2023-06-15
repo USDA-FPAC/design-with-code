@@ -1,13 +1,10 @@
 <template>
   <div>
-
     <main id="main-content" tabindex="-1">
       <div class="fds-section">
         <div class="fds-section__bd">
-          <div class="fds-m-t--s fds-m-b--m">
-            <div class="fds-level@m fds-level--justify-between">
-              <h1>About DwC</h1>
-            </div>
+          <div class="fds-m-b--m">
+            <h1>About DwC</h1>
           </div>
         </div>
       </div>

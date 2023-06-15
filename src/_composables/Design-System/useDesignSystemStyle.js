@@ -1,3 +1,4 @@
+import { computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { useUtilities } from "@/_composables/useUtilities";
 import { useGrowlControls } from "../useGrowlControls";
@@ -62,10 +63,26 @@ export function useDesignSystemStyle(store, _frameId=null) {
     }
   }
 
+  const getRandomVersionName = () => {
+    let colors = ["Clear","Red","Green","Blue","Purple","Yellow","Black","Pink","Orange","Vermillion"];
+    let animals = ["Mole","Rabbit","Crocodile","Pig","Horse","Gorilla","Chicken","Snake","Lizard","Panda","Hawk","Hamster"];
+    let greek = ["Infinitum","Alpha","Beta","Gamma","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa","Lambda","Mu","Nu","Xi","Omicron","Pi","Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega"];
+    let v = colors[Math.floor(Math.random() * 8) + 1];  
+    v += ' ' + animals[Math.floor(Math.random() * 10) + 1];
+    v += ' ' + greek[Math.floor(Math.random() * 23) + 1];
+    return v
+  }
+
   const setHistory = (_app, _v=null) => {
     version = _v ? _v : appHistory.length+1;
 
-    appHistory[version - 1] = {version: version, app: _app};
+    appHistory[version - 1] = {
+      versionNumber: version,
+      versionName: getRandomVersionName(),
+      versionDate: (new Date()).toUTCString(),
+      versionSize: (new Blob([_app]).size / 1000).toFixed(2) + 'KB',
+      app: _app
+    };
     // adding _app to allHtml to fix bug
     allHtml = _app;
 
@@ -84,15 +101,13 @@ export function useDesignSystemStyle(store, _frameId=null) {
 
   const undo = (_v=null) => {
     let v = _v ? _v : version-1;
-    //console.log('undo() ',v)
-    let state = appHistory.find(item => item.version == v);
+    let state = appHistory.find(item => item.versionNumber == v);
     return setHistory(state.app, v);
   }
 
   const redo = (_v=null) => {
     let v = _v ? _v : version + 1;
-    //console.log('redo() ',v)
-    let state = appHistory.find(item => item.version == v);
+    let state = appHistory.find(item => item.versionNumber == v);
     return setHistory(state.app, v);
   }
 
@@ -146,14 +161,14 @@ export function useDesignSystemStyle(store, _frameId=null) {
     //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
     let doc = document.createElement('div');
     doc.innerHTML = allHtml;
-    console.log('doc__ ', doc);
+    //console.log('doc__ ', doc);
 
     try {
       let newId = String('dwc-' + uuidv4());
       let source = doc.querySelector(`#${selectedPanelId}`);
-      console.log('source__ ', source)
+      //console.log('source__ ', source)
       let srcStr = String(source.outerHTML);
-      console.log('srcStr__ ', srcStr);
+      //console.log('srcStr__ ', srcStr);
 
       if( allHtml.indexOf(srcStr) > -1) {
         
@@ -237,12 +252,13 @@ export function useDesignSystemStyle(store, _frameId=null) {
     let h = ``;
     if(_init){
       let arr = [{ id:'init', type:'rawHtml', data: {html:bodyInit} }];
-      /* let app = updateCanvas({
-        action: 'onCodeUpdate',
-        methodName: '',
-        obj: { arr: arr }
-      }); */
-      let initApp = initCanvas();
+
+      let initApp = ``;
+      //console.log('call getters')
+      let history = computed( () => store.getters['settings/getHistory'] ); // []
+      //console.log('history',history)
+      
+      initApp = history.length > 0 ? history : initCanvas();
       h = setHistory(initApp);
       return h;
     } 
@@ -254,8 +270,8 @@ export function useDesignSystemStyle(store, _frameId=null) {
       } else {
         h = appHistory[version];
       }
-
       store.dispatch('design/setDeleteEnabled', false);
+      store.dispatch('settings/addHistory', h);
       return h;
     }
     if(_task.cmd=='undo') return undo();

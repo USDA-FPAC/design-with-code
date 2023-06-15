@@ -12,8 +12,9 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
-import { defineAsyncComponent, watch } from 'vue'
+import { defineAsyncComponent, watch, onBeforeMount } from 'vue'
 
 const AlertSystem = defineAsyncComponent(() => import("@/_partials/AlertSystem.vue"));
 const disclaimer = defineAsyncComponent(() => import("@/_components/disclaimer/disclaimer.vue"));
@@ -25,9 +26,15 @@ export default {
     disclaimer
   },
   setup(){
+    const store = useStore();
     const route = useRoute();
+
     watch( () => route.params, (toParams, fromParams) => {
         // react to route changes...
+    });
+    onBeforeMount(()=>{
+      console.log('call dispatch');
+      store.dispatch('settings/callHistory');
     });    
   }
 };

@@ -1,45 +1,87 @@
 <template>
   <main id="main-content" tabindex="-1">
-    <div class="fds-section fds-section--fullscreen">
+    <div class="fds-section">
       <div class="fds-section__bd">
-
-        <div class="fds-grid fds-grid--no-gutter">
-          <div class="fds-grid__1/1 fds-grid__10/12@l ">
-    
-            <div class="dwc-preview fds-box fds-p--none fds-box--bg-100">
-              <iframe
-                :id="iFrameId"
-                :srcDoc="sourceDoc"
-                title="output"
-                sandbox="allow-scripts"
-                frameborder="0"
-                width="100%"
-                height="100%"
-              />
-            </div>
-    
-          </div>
-          <div class="fds-grid__1/1 fds-grid__2/12@l fds-p-t--m">
-                     
-            <editor EDITOR_TITLE=""
-              @emitOnUpdate="handleUpdateCanvas"
-              @emitOnUndo="undo"
-              @emitOnRedo="redo"
-            />
-          
+        
+        
+        <div class="fds-m-b--l fds-level@m fds-level--justify-between">
+          <h1 class="">Settings</h1>
+          <div class="fds-level fds-level--justify-between fds-level--grow-auto fds-hide">
+            <span>
+              <button class="fds-btn fds-btn--fill fds-btn--secondary" type="button">
+                <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
+                Edit
+              </button>
+            </span>
+            <span>
+              <button class="fds-btn fds-btn--fill fds-btn--primary" type="button">
+                <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"></path></svg>
+                Start
+              </button>
+            </span>
           </div>
         </div>
+
+
+        <div class="fds-bg--tertiary-100">
+          
+          <div class="fds-p--l fds-p-t--xxs">
+            <h2>App Version History</h2>
+            
+            <div class="fds-m-t--l fds-level">
+              <span>
+                <button @click="loadVersion()" class="fds-btn fds-btn--primary fds-btn--small">Load to Canvas</button>
+              </span>
+              <span>
+                <button @click="deleteVersion()" class="fds-btn fds-btn--tertiary fds-btn--small">Delete</button>
+              </span>
+            </div>
+
+            <table class="fds-table fds-table--borderless">
+              <caption class="sr-only">Caption that is hidden visually, but read by screenreader</caption>
+              <thead>
+                <tr>
+                  <th class="">
+
+                  </th>
+                  <!-- <th scope="col" class="">Version #</th> -->
+                  <th scope="col" class="">Version Name</th>
+                  <th scope="col" class="">Timestamp</th>
+                  <th scope="col" class="fds-text-align--right">Size (KB)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in historyData" :key="item.versionDate">
+                  <td aria-label="Select">
+                    <span>
+                      <input @change="selectVersion(item.versionName)" class="fds-radio fds-radio--solo" :data-behavior="item.versionName" :id="item.versionName" type="radio" name="versions" value="">
+                      <label :for="item.versionName"><span class="sr-only">Select this row</span></label>
+                    </span>
+                  </td>
+                  <!-- <td class="">{{ item.versionNumber }}</td> -->
+                  <td class="">{{ item.versionName }}</td>
+                  <td class="">{{ item.versionDate }}</td>
+                  <td class="fds-text-align--right">{{ item.versionSize }}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+
+             <div class="fds-m-t--l fds-level">
+              <span>
+                <button @click="loadVersion()" class="fds-btn fds-btn--primary fds-btn--small">Load to Canvas</button>
+              </span>
+              <span>
+                <button @click="deleteVersion()" class="fds-btn fds-btn--tertiary fds-btn--small">Delete</button>
+              </span>
+            </div>
+            
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <component-modal
-      :MODAL_ID="componentModalId"
-      CLASSES="fds-modal--top"
-      TITLE="Add Properties"
-      :NAME="componentName"
-      @emitAddComponent="handleAddComponent"
-    >
-    </component-modal>
 </main>
 </template>
 
@@ -47,92 +89,70 @@
 import { defineAsyncComponent, ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useNavigation } from "@/_composables/useNavigation";
-import { useModalControls } from '@/_composables/useModalControls';
 import { v4 as uuidv4 } from "uuid";
-import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSystemStyle";
 
 const baseHeader = defineAsyncComponent(() => import("@/_partials/BaseHeader.vue"));
-const editor = defineAsyncComponent(() => import("@/Design/_views/Editor/Base.vue"));
-const componentModal = defineAsyncComponent(() => import('@/Design/_views/ComponentModal.vue'));
-
 
 export default {
   components: {
-    baseHeader,
-    editor,
-    componentModal
+    baseHeader
   },
 
-  setup(props, {emit}) {
+  setup(props) {
     const baseUrl = ref(import.meta.env.BASE_URL);
     const store = useStore();
     const { goto } = useNavigation();
-    const { updateSource, listenToFrame } = useDesignSystemStyle();
-    const editorsId = ref(uuidv4());
-    const canvasId = ref(uuidv4());
-    const iFrameId= ref(uuidv4());
-    const {
-      setModalId,
-      showModal,
-      hideModal
-    } = useModalControls();
-    const componentModalId = ref( uuidv4() );
-    setModalId(componentModalId.value);
-    const componentName = ref();
 
-    let sourceDoc = ref();
+    const historyArray = computed(() => {
+      let data = store.getters['settings/getHistory'];
+      if(data) return data;
+      else return null;
+    });
+    const historyData = ref();
 
-    const setSourceDoc = (_data) => {
-      sourceDoc.value = _data.app;
+    const sortVersions = (_data) => {
+      
+      if(_data!=null) _data.sort( (a, b) => new Date(b.versionDate) - new Date(a.versionDate) );
+      //if(_data!=null) _data.sort((a, b) => parseFloat(b.versionNumber) - parseFloat(a.versionNumber));
+      return _data;
     }
 
-    const undo = () => {
-      setSourceDoc(updateSource({cmd:'undo'}, ''));
+    const currVersionName = ref(null);
+    const selectVersion = (_version) => {
+      currVersionName.value = _version
     }
 
-    const undoVersion = (_version) => {
-      setSourceDoc(updateSource({cmd:'undo', data:_version}, ''));
+    const loadVersion = () => {
+      if(currVersionName.value!=null) {
+        console.log('loadVersion',currVersionName.value)
+        //store.dispatch('settings/setVersion', currVersionName.value);
+      }
     }
 
-    const redo = () => {
-      setSourceDoc(updateSource({cmd:'redo'}, ''));
+    const deleteVersion = () => {
+      if(currVersionName.value!=null){
+        console.log('deleteVersion', historyData.value)
+        let appHistory = historyData.value.filter( item => item.versionName != currVersionName.value);
+        let rawArray = JSON.parse(JSON.stringify(appHistory));
+        console.log('rawArray',rawArray)
+        store.dispatch('settings/replaceHistory', rawArray);
+      }
     }
 
-    const handleUpdateCanvas = (_data) => {
-      //console.log('updateHtmlCode',_data)
-      // if component show modal
-      componentName.value = _data.details.name;
-      showModal(componentModalId.value);
-
-      //setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
-    }
-
-    const handleAddComponent = (_data) => {
-      setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
-    }
-
-    /* watch(dynamicHtml, (value1) => {
-      htmlCode.value = value1;
-    }); */
-
+    watch(historyArray, (value)=>{
+      historyData.value = sortVersions( value );
+    })
     onMounted(()=>{
-      listenToFrame(iFrameId.value);
-      setSourceDoc(updateSource('', '', true));
+      store.dispatch('settings/callHistory');
     });
 
     return {
       baseUrl,
       goto,
-      sourceDoc,
-      editorsId,
-      canvasId,
-      iFrameId,
-      handleUpdateCanvas,
-      undo,
-      redo,
-      componentModalId,
-      handleAddComponent,
-      componentName
+      historyData,
+      selectVersion,
+      loadVersion,
+      deleteVersion
     };
   }
 };

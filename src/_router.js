@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { designRoutes } from '@/Design/_routes/design.routes.js';
 import { codeExportRoutes } from '@/CodeExport/_routes/codeExport.routes.js';
 import { aboutRoutes } from '@/About/_routes/about.routes.js';
+import { settingsRoutes } from '@/Settings/_routes/settings.routes.js';
 
 const routes = [
   {
@@ -12,6 +13,7 @@ const routes = [
       ...designRoutes,
       ...codeExportRoutes,
       ...aboutRoutes,
+      ...settingsRoutes,
       { 
         path: '/:pathMatch(.*)*',
         name: 'not-found',
