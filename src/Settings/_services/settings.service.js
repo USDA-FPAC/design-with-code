@@ -13,10 +13,16 @@ const addStorageHistory = (_payload) => {
   let arr = getStorageHistory();
   if(arr.length > 50) arr.pop();
   arr.push(_payload);
-  setStorageHistory(arr);
-  let newArr = getStorageHistory();  
-  return newArr
+  return setStorageHistory(arr);
 }
+
+const setCurrentStorageVersion = (_payload) => {
+  let arr = getStorageHistory();
+  if(arr.length > 50) arr.pop();
+  arr.splice(0, 0, _payload);
+  return setStorageHistory(arr);
+}
+
 
 export const settingsService = {
 
@@ -36,9 +42,9 @@ export const settingsService = {
     let history = addStorageHistory(_payload);
     try{
       let res = history;
-      settingsService.requestNext( res, _callback, 'setHistory' ); 
+      settingsService.requestNext( res, _callback, 'addLocalHistory' ); 
     } catch(_err){
-      console.log( 'setHistory' + ' Settings SERVICE ERROR', _err)
+      console.log( 'addLocalHistory' + ' Settings SERVICE ERROR', _err)
     }
   },
 
@@ -47,9 +53,20 @@ export const settingsService = {
     let history = setStorageHistory(_payload);
     try{
       let res = history;
-      settingsService.requestNext( res, _callback, 'setHistory' ); 
+      settingsService.requestNext( res, _callback, 'replaceLocalHistory' ); 
     } catch(_err){
-      console.log( 'setHistory' + ' Settings SERVICE ERROR', _err)
+      console.log( 'replaceLocalHistory' + ' Settings SERVICE ERROR', _err)
+    }
+  },
+
+  setCurrentVersion: async (_payload, _callback=null) => {
+    console.log('setCurrentVersion()')
+    let history = setCurrentStorageVersion(_payload);
+    try{
+      let res = history;
+      settingsService.requestNext( res, _callback, 'setCurrentVersion' ); 
+    } catch(_err){
+      console.log( 'setCurrentVersion' + ' Settings SERVICE ERROR', _err)
     }
   },
 

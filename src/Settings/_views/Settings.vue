@@ -125,7 +125,15 @@ export default {
     const loadVersion = () => {
       if(currVersionName.value!=null) {
         console.log('loadVersion',currVersionName.value)
-        //store.dispatch('settings/setVersion', currVersionName.value);
+        let appHistory = historyData.value.map( item => {
+          if(item.versionName == currVersionName.value){
+            item.versionDate = (new Date()).toUTCString()
+          }
+          return item;
+        });
+        let rawArray = JSON.parse(JSON.stringify(appHistory));
+        //store.dispatch('settings/setVersion', rawArray[0]);
+        store.dispatch('settings/replaceHistory', rawArray);
       }
     }
 

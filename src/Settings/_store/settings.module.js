@@ -51,7 +51,19 @@ const actions = {
         commit('SET_HISTORY', result.data );
       }
     });
-  }
+  },
+
+  setVersion( { commit, state, rootState }, _payload ){
+    console.log('setVersion()')
+    commit('SET_ERRORS', []);
+    settingsService.setCurrentVersion(_payload, (result) => {
+      if(result.errors){
+        commit('SET_ERRORS', result.errors);
+      } else {
+        commit('SET_HISTORY', result.data );
+      }
+    });
+  },
 
 };
 
