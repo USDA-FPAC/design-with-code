@@ -69,20 +69,29 @@ export default {
     //const setIsSelectedContainer = (_id) => getPropertyFromId(_id, 'isSelected', tabsData.value);
     const setSelectedClass = (_boo) => { return _boo ? 'fds-content-tabs__label--active' : ''};
 
+    const tabTest = ref(false);
     const setVisibility = () => {
-      tabsData.value.forEach( (o) => {
-        if(o.isSelected) {
-          document.getElementById(o.containerId).style.visibility = "initial";
-          document.getElementById(o.containerId).style.display = "inline";
-        } else {
-          document.getElementById(o.containerId).style.visibility = "hidden";
-          document.getElementById(o.containerId).style.display = "none";
-        }
-      })
+      if( tabTest.value ){
+        tabsData.value.forEach( (o) => {
+          if(o.isSelected) {
+            document.getElementById(o.containerId).style.visibility = "initial";
+            document.getElementById(o.containerId).style.display = "inline";
+          } else {
+            document.getElementById(o.containerId).style.visibility = "hidden";
+            document.getElementById(o.containerId).style.display = "none";
+          }
+        })
+      }
     }
 
-    const initializeTabs = () => { 
-      let tm = setTimeout(()=>{ if(tabsData.value) setVisibility() }, 200);
+    const initializeTabs = () => {
+      let el = document.getElementById( tabsData.value[0]['containerId'] );
+      if(el != undefined) {
+        tabTest.value = true;
+        setVisibility();
+      } else {
+        setTimeout(() => initializeTabs(), 250);
+      }
     };
 
     onMounted(()=>{

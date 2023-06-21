@@ -164,7 +164,7 @@ export default {
 
     const handleTabSelected = (_obj) => {
       // Do something in Parent Component when Tab Selected
-      console.log('_obj.id',_obj.id)
+      //console.log('_obj.id',_obj.id)
     }
 
     watch([deleteEnabled, undoEnabled, redoEnabled], ( curr, prev)=>{

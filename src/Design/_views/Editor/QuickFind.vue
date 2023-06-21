@@ -53,6 +53,7 @@ export default {
 
 
     onMounted(()=>{
+      console.log('QuickFind > onMounted()',props.DATA)
       quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
     })
 
