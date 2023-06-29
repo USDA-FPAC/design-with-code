@@ -253,12 +253,7 @@ export function useDesignSystemStyle(store, _frameId=null) {
     if(_init){
       let arr = [{ id:'init', type:'rawHtml', data: {html:bodyInit} }];
 
-      let initApp = ``;
-      //console.log('call getters')
-      let history = computed( () => store.getters['settings/getHistory'] ); // []
-      //console.log('history',history)
-      
-      initApp = history.length > 0 ? history : initCanvas();
+      let initApp = initCanvas();
       h = setHistory(initApp);
       return h;
     } 
@@ -271,7 +266,6 @@ export function useDesignSystemStyle(store, _frameId=null) {
         h = appHistory[version];
       }
       store.dispatch('design/setDeleteEnabled', false);
-      store.dispatch('settings/addHistory', h);
       return h;
     }
     if(_task.cmd=='undo') return undo();

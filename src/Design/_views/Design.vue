@@ -29,6 +29,21 @@
           
           </div>
         </div>
+
+        <div class="fds-level fds-level--gutter-s">
+          <span class="fds-text-size--0">
+            {{ currentVersionName }}
+          </span>
+          <span class="fds-text-size--0">|</span>
+          <span class="fds-text-size--0">
+            {{ currentVersionDate }}
+          </span>
+          <span class="fds-text-size--0">|</span>
+          <span class="fds-text-size--0">
+            {{ currentVersionSize }}
+          </span>
+        </div>
+
       </div>
     </div>
 
@@ -84,11 +99,26 @@ export default {
     const dataObjHolder = ref({});
     const showProperties = ref([]);
 
+    let frameSource = computed(()=>{
+      let data = store.getters['settings/getCurrentVersion'];
+      if(data!=null) return data;
+      else return null;
+    });
     let sourceDoc = ref();
 
     const setSourceDoc = (_data) => {
-      sourceDoc.value = _data.app;
-      store.dispatch('codeExport/setHtml',sourceDoc.value);
+      updateCurrentVersionDetails(_data);
+      store.dispatch('settings/setCurrentVersion', _data);
+      store.dispatch('codeExport/setHtml', _data.app);
+    }
+
+    const currentVersionName = ref();
+    const currentVersionDate = ref();
+    const currentVersionSize = ref();
+    const updateCurrentVersionDetails = (_v) => {
+      currentVersionName.value = _v.versionName;
+      currentVersionDate.value = _v.versionDate;
+      currentVersionSize.value = _v.versionSize;
     }
 
     const undo = () => {
@@ -112,7 +142,6 @@ export default {
       }
       */
       dataObjHolder.value = _data.obj
-      console.log('Design.vue > handleUpdateCanvas > _data',_data)
       
       if(_data.action=='onTemplateUpdate'){
         setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
@@ -121,9 +150,9 @@ export default {
       if(_data.action=='onComponentUpdate'){
         methodName.value = _data.methodName;
         let obj = _data.obj;
+
         if(obj.hasOwnProperty('useModal')){
           let useModal = obj.useModal == "true" ? true : false;
-
           showProperties.value = obj.showProperties.split(',');
 
           if(useModal){
@@ -153,14 +182,23 @@ export default {
       setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
-    /* watch(dynamicHtml, (value1) => {
-      htmlCode.value = value1;
-    }); */
+    watch(frameSource, (curr) => {
+      if(curr != undefined) {
+        console.log('Design.vue > watch()',curr);
+        sourceDoc.value = curr.app;
+        updateCurrentVersionDetails(curr);
+      } else {
+         setSourceDoc(updateSource('', '', true));
+      }
+    });
 
     onMounted(()=>{
+      console.log('Design.vue > onMounted()');
       listenToFrame(iFrameId.value);
-      setSourceDoc(updateSource('', '', true));
+      //setSourceDoc(updateSource('', '', true));
+      store.dispatch('settings/callHistory');
     });
+
 
     return {
       baseUrl,
@@ -175,7 +213,10 @@ export default {
       componentModalId,
       handleModalAdditions,
       methodName,
-      showProperties
+      showProperties,
+      currentVersionName,
+      currentVersionDate,
+      currentVersionSize
     };
   }
 };

@@ -33,8 +33,7 @@ export default {
         // react to route changes...
     });
     onBeforeMount(()=>{
-      console.log('call dispatch');
-      store.dispatch('settings/callHistory');
+      //store.dispatch('settings/callHistory');
     });    
   }
 };

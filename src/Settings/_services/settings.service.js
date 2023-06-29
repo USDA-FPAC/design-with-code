@@ -59,20 +59,19 @@ export const settingsService = {
     }
   },
 
-  setCurrentVersion: async (_payload, _callback=null) => {
-    console.log('setCurrentVersion()')
+  setLocalVersion: async (_payload, _callback=null) => {
+    console.log('setLocalVersion()')
     let history = setCurrentStorageVersion(_payload);
     try{
       let res = history;
-      settingsService.requestNext( res, _callback, 'setCurrentVersion' ); 
+      settingsService.requestNext( res, _callback, 'setLocalVersion' ); 
     } catch(_err){
-      console.log( 'setCurrentVersion' + ' Settings SERVICE ERROR', _err)
+      console.log( 'setLocalVersion' + ' Settings SERVICE ERROR', _err)
     }
   },
 
   requestNext: (_res, _callback, _methodCalled) => {
-    console.log('METHOD',_methodCalled);
-    console.log('_res',_res)
+    console.log('requestNext > _res ',_res);
     _callback({ status: true, data: _res });
   } 
 }

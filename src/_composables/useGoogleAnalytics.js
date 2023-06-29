@@ -95,10 +95,10 @@ export function useGoogleAnalytics() {
       if(cat!='') eventObject['event_category'] = cat;
       if(lab!='') eventObject['event_label'] = lab;
       gtag('event', typ, eventObject);
-      console.log('PROD GA TRACKING: ' + typ + " | " + cat + " | " + lab)
+      //console.log('PROD GA TRACKING: ' + typ + " | " + cat + " | " + lab)
       //gtag('event', typ, { 'event_category': cat, 'event_label': lab });
     } else {
-      console.log('DEV GA TRACKING: ' + typ + " | " + cat + " | " + lab)
+      //console.log('DEV GA TRACKING: ' + typ + " | " + cat + " | " + lab)
     }
   }
 

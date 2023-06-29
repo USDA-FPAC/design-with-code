@@ -4,14 +4,16 @@ import { settingsService } from "@/Settings/_services/settings.service";
 const state = () =>({
   isLoaded: false,
   errors: [],
-  appHistory: []
+  appHistory: [],
+  currentVersion: {}
 });
   
 
 const getters = {
   isLoaded: state => state.isLoaded,
   getErrors: state => state.errors,
-  getHistory: state => state.appHistory
+  getHistory: state => state.appHistory,
+  getCurrentVersion: state => state.currentVersion
 };
 
 const actions = {
@@ -53,27 +55,33 @@ const actions = {
     });
   },
 
-  setVersion( { commit, state, rootState }, _payload ){
-    console.log('setVersion()')
+  setCurrentVersion( { commit, state, rootState }, _payload ){
+    console.log('setCurrentVersion()')
     commit('SET_ERRORS', []);
-    settingsService.setCurrentVersion(_payload, (result) => {
+    settingsService.setLocalVersion(_payload, (result) => {
       if(result.errors){
         commit('SET_ERRORS', result.errors);
       } else {
         commit('SET_HISTORY', result.data );
       }
     });
-  },
+  }
 
 };
 
 const mutations = {
-  SET_ERRORS(state, payload){
-    state.errors = payload;
+  SET_ERRORS(_state, _payload){
+    _state.errors = _payload;
   },
 
-  SET_HISTORY( state, payload ){
-    state.appHistory = payload;
+  SET_HISTORY( _state, _payload ){
+    if(_payload.length > 0 ) {
+      let versions = _payload.sort( (a, b) => new Date(b.versionDate) - new Date(a.versionDate) );
+      _state.appHistory = versions
+      _state.currentVersion = versions[0];
+    } else {
+      _state.currentVersion = null;
+    }
   },
 
 };

@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useQuickFind } from "@/_composables/useQuickFind";
 import { v4 as uuidv4 } from "uuid";
 
@@ -51,9 +51,13 @@ export default {
       searchItems( phrase );
     }
 
-
+    watch(componentsData, (curr)=>{
+      console.log('QuickFind watch() curr', curr)
+      //quickFinderInit(curr, quickFindResultsId.value, selectItem)
+    });
+    
     onMounted(()=>{
-      console.log('QuickFind > onMounted()',props.DATA)
+      console.log('QuickFind > onMounted() props.DATA', props.DATA)
       quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
     })
 
