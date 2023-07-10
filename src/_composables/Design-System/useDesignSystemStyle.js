@@ -15,7 +15,7 @@ const { getMainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBott
 const { getTemplate } = useTemplates(projectLocation);
 const { getComponent } = useComponents(projectLocation);
 
-export function useDesignSystemStyle(store, _frameId=null) {
+export function useDesignSystemStyle(_store, _frameId=null) {
   
   let allHtml = '';
   let frameId = _frameId;
@@ -56,7 +56,7 @@ export function useDesignSystemStyle(store, _frameId=null) {
   const handleComms = (_id, _frameId=null) => { 
     if(_id != 'handshake') {
       console.log('panel selected :: ', _id)
-      store.dispatch('design/setDeleteEnabled', true);
+      _store.dispatch('design/setDeleteEnabled', true);
       selectedPanelId = _id;
     } else {
       console.log('~~ logging Init Handshake ~~')
@@ -87,13 +87,13 @@ export function useDesignSystemStyle(store, _frameId=null) {
     allHtml = _app;
 
     // control interface
-    if(version > 1) store.dispatch('design/setUndoEnabled', true);
-    else store.dispatch('design/setUndoEnabled', false);
+    if(version > 1) _store.dispatch('design/setUndoEnabled', true);
+    else _store.dispatch('design/setUndoEnabled', false);
 
-    if(version < appHistory.length ) store.dispatch('design/setRedoEnabled', true);
-    else store.dispatch('design/setRedoEnabled', false);
+    if(version < appHistory.length ) _store.dispatch('design/setRedoEnabled', true);
+    else _store.dispatch('design/setRedoEnabled', false);
 
-    store.dispatch('design/setDeleteEnabled', false);
+    _store.dispatch('design/setDeleteEnabled', false);
     //console.log('appHistory __ ',appHistory)
 
     return appHistory[version - 1];
@@ -140,18 +140,21 @@ export function useDesignSystemStyle(store, _frameId=null) {
 
     if( action == "onComponentUpdate") allHtml = rebuildCanvas( obj.placementLocation, getComponent(methodName, obj) );
 
+    //
+    // Below is currently not being used
+    //
     if( action == "onCodeUpdate"){
       let code = ``;
-      //allHtml = getTop({css:globalCss}) + getHeaderApp() + mainTop + steppedTabs + headerArea;
       data.forEach(block => {
         let data = block.data;
         if(block.type=='paragraph') code += data.text;
         if(block.type=='code') code += data.text;
         if(block.type=='rawHtml') code += data.html;
       });
-      //allHtml += bodyArea + steppedControls + mainBottom + frameScripts;
       allHtml = rebuildCanvas( obj.placementLocation, code );
     }
+    //
+    //
     
     return allHtml;
   };
@@ -160,13 +163,15 @@ export function useDesignSystemStyle(store, _frameId=null) {
   const rebuildCanvas = (_location, _code) => {
     //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
     let doc = document.createElement('div');
+    console.log('allHtml',allHtml);
     doc.innerHTML = allHtml;
-    //console.log('doc__ ', doc);
+    console.log('doc__ ', doc);
 
-    try {
-      let newId = String('dwc-' + uuidv4());
-      let source = doc.querySelector(`#${selectedPanelId}`);
-      //console.log('source__ ', source)
+    let newId = String('dwc-' + uuidv4());
+    let source = doc.querySelector(`#${selectedPanelId}`);
+    //console.log('source__ ', source);
+
+    if(source!=null){
       let srcStr = String(source.outerHTML);
       //console.log('srcStr__ ', srcStr);
 
@@ -211,15 +216,12 @@ export function useDesignSystemStyle(store, _frameId=null) {
       } else {
         showNotFoundError();
       }
-
-      doc.remove();
-      selectedPanelId = '';
-    
-    } catch(_err){
-      
-      console.log(_err)
-      //showNotFoundError(_err);
+    } else {
+      showNotFoundError();
     }
+
+    doc.remove();
+    selectedPanelId = '';
     
     return allHtml;
   }
@@ -265,7 +267,7 @@ export function useDesignSystemStyle(store, _frameId=null) {
       } else {
         h = appHistory[version];
       }
-      store.dispatch('design/setDeleteEnabled', false);
+      _store.dispatch('design/setDeleteEnabled', false);
       return h;
     }
     if(_task.cmd=='undo') return undo();
@@ -274,10 +276,15 @@ export function useDesignSystemStyle(store, _frameId=null) {
 
   }
 
+  const setHtmlSource = (_html) => {
+    allHtml = _html;
+  }
+
 
   return {
     updateSource,
-    listenToFrame
+    listenToFrame,
+    setHtmlSource
   }
 
 }

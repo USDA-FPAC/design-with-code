@@ -1,4 +1,6 @@
 
+const VERSIONS_TO_KEEP = 50;
+
 const getStorageHistory = () => {
   return JSON.parse( localStorage.getItem('history') ) || [];
 }
@@ -11,14 +13,14 @@ const setStorageHistory = (_payload) => {
 
 const addStorageHistory = (_payload) => {
   let arr = getStorageHistory();
-  if(arr.length > 50) arr.pop();
+  if(arr.length > VERSIONS_TO_KEEP) arr.pop();
   arr.push(_payload);
   return setStorageHistory(arr);
 }
 
 const setCurrentStorageVersion = (_payload) => {
   let arr = getStorageHistory();
-  if(arr.length > 50) arr.pop();
+  if(arr.length > VERSIONS_TO_KEEP) arr.pop();
   arr.splice(0, 0, _payload);
   return setStorageHistory(arr);
 }
@@ -27,7 +29,7 @@ const setCurrentStorageVersion = (_payload) => {
 export const settingsService = {
 
   getLocalHistory: async (_callback) => {
-    console.log('getLocalHistory()')
+    //console.log('getLocalHistory()')
     let history = getStorageHistory();
     try{
       let res = history;
@@ -38,7 +40,7 @@ export const settingsService = {
   },
 
   addLocalHistory: async (_payload, _callback=null) => {
-    console.log('addLocalHistory()')
+    //console.log('addLocalHistory()')
     let history = addStorageHistory(_payload);
     try{
       let res = history;
@@ -49,7 +51,7 @@ export const settingsService = {
   },
 
   replaceLocalHistory: async (_payload, _callback=null) => {
-    console.log('setLocalHistory()')
+    //console.log('setLocalHistory()')
     let history = setStorageHistory(_payload);
     try{
       let res = history;
@@ -60,7 +62,7 @@ export const settingsService = {
   },
 
   setLocalVersion: async (_payload, _callback=null) => {
-    console.log('setLocalVersion()')
+    //console.log('setLocalVersion()')
     let history = setCurrentStorageVersion(_payload);
     try{
       let res = history;
@@ -71,7 +73,7 @@ export const settingsService = {
   },
 
   requestNext: (_res, _callback, _methodCalled) => {
-    console.log('requestNext > _res ',_res);
+    //console.log('requestNext > _res ',_res);
     _callback({ status: true, data: _res });
   } 
 }

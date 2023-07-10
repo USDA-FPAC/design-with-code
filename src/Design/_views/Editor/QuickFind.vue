@@ -52,12 +52,12 @@ export default {
     }
 
     watch(componentsData, (curr)=>{
-      console.log('QuickFind watch() curr', curr)
+      //console.log('QuickFind watch() curr', curr)
       //quickFinderInit(curr, quickFindResultsId.value, selectItem)
     });
     
     onMounted(()=>{
-      console.log('QuickFind > onMounted() props.DATA', props.DATA)
+      //console.log('QuickFind > onMounted() props.DATA', props.DATA)
       quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
     })
 

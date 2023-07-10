@@ -19,7 +19,7 @@ const getters = {
 const actions = {
 
   callHistory({ commit, state, rootState }){
-    console.log('callHistory()')
+    //console.log('callHistory()')
     commit('SET_ERRORS', []);
     settingsService.getLocalHistory( (result) => {
       //console.log('callHistory result', result)
@@ -32,7 +32,7 @@ const actions = {
   },
   
   addHistory( { commit, state, rootState }, _payload ){
-    console.log('addHistory()')
+    //console.log('addHistory()')
     commit('SET_ERRORS', []);
     settingsService.addLocalHistory(_payload, (result) => {
       if(result.errors){
@@ -44,7 +44,7 @@ const actions = {
   },
 
   replaceHistory( { commit, state, rootState }, _payload ){
-    console.log('replaceHistory()')
+    //console.log('replaceHistory()')
     commit('SET_ERRORS', []);
     settingsService.replaceLocalHistory(_payload, (result) => {
       if(result.errors){
@@ -56,7 +56,7 @@ const actions = {
   },
 
   setCurrentVersion( { commit, state, rootState }, _payload ){
-    console.log('setCurrentVersion()')
+    //console.log('setCurrentVersion()')
     commit('SET_ERRORS', []);
     settingsService.setLocalVersion(_payload, (result) => {
       if(result.errors){

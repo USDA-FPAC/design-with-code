@@ -30,7 +30,7 @@
           </div>
         </div>
 
-        <div class="fds-level fds-level--gutter-s">
+        <div class="fds-level fds-level--gutter-s fds-m-b--none">
           <span class="fds-text-size--0">
             {{ currentVersionName }}
           </span>
@@ -83,11 +83,18 @@ export default {
     const baseUrl = ref(import.meta.env.BASE_URL);
     const store = useStore();
     const { goto } = useNavigation();
+
+    let frameSource = computed(()=>{
+      let data = store.getters['settings/getCurrentVersion'];
+      if(data!=null) return data;
+      else return null;
+    });
+    let sourceDoc = ref();
     
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
-    const { updateSource, listenToFrame } = useDesignSystemStyle(store, String(iFrameId.value));
+    const { updateSource, listenToFrame, setHtmlSource } = useDesignSystemStyle(store, sourceDoc, String(iFrameId.value));
     const {
       setModalId,
       showModal,
@@ -99,15 +106,14 @@ export default {
     const dataObjHolder = ref({});
     const showProperties = ref([]);
 
-    let frameSource = computed(()=>{
-      let data = store.getters['settings/getCurrentVersion'];
-      if(data!=null) return data;
-      else return null;
-    });
-    let sourceDoc = ref();
+    
 
     const setSourceDoc = (_data) => {
+      sourceDoc.value = _data.app;
       updateCurrentVersionDetails(_data);
+    }
+
+    const setVersion = (_data) => {
       store.dispatch('settings/setCurrentVersion', _data);
       store.dispatch('codeExport/setHtml', _data.app);
     }
@@ -122,15 +128,21 @@ export default {
     }
 
     const undo = () => {
-      setSourceDoc(updateSource({cmd:'undo'}, ''));
+      let source = updateSource({cmd:'undo'}, '');
+      setVersion(source);
+      //setSourceDoc(source);
     }
 
     const undoVersion = (_version) => {
-      setSourceDoc(updateSource({cmd:'undo', data:_version}, ''));
+      let source = updateSource({cmd:'undo', data:_version}, '')
+      setVersion(source);
+      //setSourceDoc(source);
     }
 
     const redo = () => {
-      setSourceDoc(updateSource({cmd:'redo'}, ''));
+      let source = updateSource({cmd:'redo'}, '')
+      setVersion(source);
+      //setSourceDoc(source);
     }
 
     const handleUpdateCanvas = (_data) => {
@@ -141,10 +153,12 @@ export default {
         obj: _obj
       }
       */
+      let source = {};
       dataObjHolder.value = _data.obj
       
       if(_data.action=='onTemplateUpdate'){
-        setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+        source = updateSource( {cmd:'updateCanvas', data:''}, _data);
+        setVersion( source );
       }
 
       if(_data.action=='onComponentUpdate'){
@@ -158,13 +172,18 @@ export default {
           if(useModal){
             showModal(componentModalId.value);
           } else {
-            setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+            source = updateSource( {cmd:'updateCanvas', data:''}, _data);
+            setVersion( source );
           }
 
         } else {
-          setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+          source = updateSource( {cmd:'updateCanvas', data:''}, _data);
+          setVersion( source );
         }
       }
+
+      source = {};
+      //setSourceDoc( source );
     }
 
     const handleModalAdditions = (_data) => {
@@ -179,23 +198,28 @@ export default {
         }
       })
       _data.obj = dataObj;
-      setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
+      console.log('handleModalAdditions',_data);
+      let source = updateSource( {cmd:'updateCanvas', data:''}, _data);
+      
+      setVersion( source );
+      //setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
 
     watch(frameSource, (curr) => {
+      //console.log('Design.vue > watch()',curr);
       if(curr != undefined) {
-        console.log('Design.vue > watch()',curr);
-        sourceDoc.value = curr.app;
-        updateCurrentVersionDetails(curr);
+        setSourceDoc(curr);
+        setHtmlSource(curr.app);
       } else {
-         setSourceDoc(updateSource('', '', true));
+        let app = updateSource('', '', true);
+        setVersion(app);
+        setHtmlSource(app);
       }
     });
 
     onMounted(()=>{
-      console.log('Design.vue > onMounted()');
+      //console.log('Design.vue > onMounted()');
       listenToFrame(iFrameId.value);
-      //setSourceDoc(updateSource('', '', true));
       store.dispatch('settings/callHistory');
     });
 

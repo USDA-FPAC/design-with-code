@@ -124,7 +124,7 @@ export default {
 
     const loadVersion = () => {
       if(currVersionName.value!=null) {
-        console.log('loadVersion',currVersionName.value)
+        //console.log('loadVersion',currVersionName.value)
         let appHistory = historyData.value.map( item => {
           if(item.versionName == currVersionName.value){
             item.versionDate = (new Date()).toUTCString()
@@ -139,10 +139,9 @@ export default {
 
     const deleteVersion = () => {
       if(currVersionName.value!=null){
-        console.log('deleteVersion', historyData.value)
+        //console.log('deleteVersion', historyData.value)
         let appHistory = historyData.value.filter( item => item.versionName != currVersionName.value);
         let rawArray = JSON.parse(JSON.stringify(appHistory));
-        console.log('rawArray',rawArray)
         store.dispatch('settings/replaceHistory', rawArray);
       }
     }
@@ -150,6 +149,7 @@ export default {
     watch(historyArray, (value)=>{
       historyData.value = sortVersions( value );
     })
+    
     onMounted(()=>{
       store.dispatch('settings/callHistory');
     });
