@@ -1,0 +1,1 @@
+import{_ as o,o as t,e as s,l as e}from"./index.4efb4425.js";const c={},r={class:"fds-topper"},n=e("div",{class:"fds-topper__bd"},[e("a",{class:"fds-topper__link",href:"#main-content"},"Return to top")],-1),_=[n];function a(p,d,f,i,l,h){return t(),s("div",r,_)}const u=o(c,[["render",a]]);export{u as default};
