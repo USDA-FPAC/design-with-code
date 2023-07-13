@@ -14,6 +14,7 @@
 </template>
 <script>
 import { ref, computed, onMounted, watch } from "vue";
+import { useStore } from "vuex";
 import { useQuickFind } from "@/_composables/useQuickFind";
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,7 +25,13 @@ export default {
 
   setup(props, {emit}) {
 
-    const componentsData = computed(()=> props.DATA );
+    const store = useStore();
+
+    const componentsData = computed( ()=> {
+      let data = props.DATA;
+      if(data!=undefined) return data;
+      else return null;
+    });
 
     const { quickFinderInit, searchItems } = useQuickFind();
     const quickFindInputId = ref(uuidv4());
@@ -52,13 +59,14 @@ export default {
     }
 
     watch(componentsData, (curr)=>{
-      //console.log('QuickFind watch() curr', curr)
-      //quickFinderInit(curr, quickFindResultsId.value, selectItem)
+      console.log('QuickFind watch() curr', curr)
+      quickFinderInit(curr, quickFindResultsId.value, selectItem)
     });
     
     onMounted(()=>{
       //console.log('QuickFind > onMounted() props.DATA', props.DATA)
-      quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
+      if(props.DATA != undefined) quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
+      else store.dispatch('design/setItems');
     })
 
     return {
