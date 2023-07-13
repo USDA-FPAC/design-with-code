@@ -4,20 +4,23 @@
       <div class="fds-section__bd">
         
         
-        <div class="fds-m-b--l fds-level@m fds-level--justify-between">
+        <div class="fds-m-b--l fds-level@m fds-level--align-bottom fds-level--justify-between">
           <h1 class="">Settings</h1>
-          <div class="fds-level fds-level--justify-between fds-level--grow-auto fds-hide">
+          <div class="fds-level fds-level--justify-between fds-level--grow-auto">
             <span>
-              <button class="fds-btn fds-btn--fill fds-btn--secondary" type="button">
-                <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
-                Edit
+              <button @click="downloadVersion" class="fds-btn fds-btn--fill fds-btn--secondary" type="button">
+                <svg class="fsa-icon fsa-icon--size-2" aria-hidden="true" focusable="false" role="img" fill="#205493" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"></path><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"></path></svg>
+                Save to Computer
               </button>
             </span>
             <span>
-              <button class="fds-btn fds-btn--fill fds-btn--primary" type="button">
-                <svg class="fds-icon fds-icon--size-2" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"></path></svg>
-                Start
-              </button>
+              <form action="#" :id="uploadFileFormId" method="POST" enctype="multipart/form-data">
+                <input @change="triggerUploadForm" accept="string" class="fds-input" hidden :id="uploadFileId" :name="uploadFileId" type="file">
+                <button @click="selectLocally" type="button" class="fds-btn fds-btn--fill fds-btn--secondary">
+                  <svg class="fsa-icon fsa-icon--size-2" aria-hidden="true" focusable="false" role="img" fill="#205493" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11z"></path></svg>
+                  Upload from Computer
+                </button>
+              </form>
             </span>
           </div>
         </div>
@@ -111,7 +114,6 @@ export default {
     const historyData = ref();
 
     const sortVersions = (_data) => {
-      
       if(_data!=null) _data.sort( (a, b) => new Date(b.versionDate) - new Date(a.versionDate) );
       //if(_data!=null) _data.sort((a, b) => parseFloat(b.versionNumber) - parseFloat(a.versionNumber));
       return _data;
@@ -124,7 +126,6 @@ export default {
 
     const loadVersion = () => {
       if(currVersionName.value!=null) {
-        //console.log('loadVersion',currVersionName.value)
         let appHistory = historyData.value.map( item => {
           if(item.versionName == currVersionName.value){
             item.versionDate = (new Date()).toUTCString()
@@ -139,11 +140,28 @@ export default {
 
     const deleteVersion = () => {
       if(currVersionName.value!=null){
-        //console.log('deleteVersion', historyData.value)
         let appHistory = historyData.value.filter( item => item.versionName != currVersionName.value);
         let rawArray = JSON.parse(JSON.stringify(appHistory));
         store.dispatch('settings/replaceHistory', rawArray);
       }
+    }
+
+    const downloadVersion = () => {
+      if(historyData.value[0]!=null) {
+        store.dispatch('settings/downloadFile', historyData.value[0]);
+      }
+    }
+
+    const uploadFileFormId = ref(uuidv4());
+    const uploadFileId = ref(uuidv4());
+    const uploadForm = ref();
+
+    const selectLocally = (_evt) => { document.getElementById(uploadFileId.value).click() };
+    const triggerUploadForm = (_evt) => { uploadForm.value.requestSubmit() };
+    const uploadFormSubmit = (_evt) => {
+      let [file] = document.getElementById(uploadFileId.value).files;
+      store.dispatch('settings/uploadFile', { file: file } );
+      _evt.preventDefault();
     }
 
     watch(historyArray, (value)=>{
@@ -152,6 +170,8 @@ export default {
     
     onMounted(()=>{
       store.dispatch('settings/callHistory');
+      uploadForm.value = document.getElementById(uploadFileFormId.value);
+      uploadForm.value.addEventListener('submit', uploadFormSubmit);
     });
 
     return {
@@ -160,7 +180,13 @@ export default {
       historyData,
       selectVersion,
       loadVersion,
-      deleteVersion
+      deleteVersion,
+      downloadVersion,
+      selectLocally,
+      triggerUploadForm,
+      uploadFileFormId,
+      uploadFileId,
+      uploadFormSubmit
     };
   }
 };

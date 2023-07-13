@@ -1,5 +1,7 @@
 
 const VERSIONS_TO_KEEP = 50;
+const SUCCESS_MESSAGE = 'success';
+const FILE_EXT = '.dwcf'
 
 const getStorageHistory = () => {
   return JSON.parse( localStorage.getItem('history') ) || [];
@@ -23,6 +25,20 @@ const setCurrentStorageVersion = (_payload) => {
   if(arr.length > VERSIONS_TO_KEEP) arr.pop();
   arr.splice(0, 0, _payload);
   return setStorageHistory(arr);
+}
+
+const downloadToLocal = (_version) => {
+  try {
+    const newLink = document.createElement("a");
+    const newFile = new Blob([JSON.stringify(_version)], { type: 'text/plain' });
+    newLink.href = URL.createObjectURL(newFile);
+    newLink.download = _version.versionName.split(' ').join('-') + FILE_EXT;
+    newLink.click();
+    URL.revokeObjectURL(newLink.href);
+    return SUCCESS_MESSAGE;
+  } catch (_err ){
+    return _err;
+  }
 }
 
 
@@ -70,6 +86,33 @@ export const settingsService = {
     } catch(_err){
       console.log( 'setLocalVersion' + ' Settings SERVICE ERROR', _err)
     }
+  },
+
+  downloadFile: async (_payload, _callback=null) => {
+    let res = downloadToLocal(_payload);
+    try{
+      if(res==SUCCESS_MESSAGE){
+        settingsService.requestNext( { data: res }, _callback, 'downloadFile' ); 
+      } else {
+        console.log( 'downloadFile' + ' Settings SERVICE ERROR', res);
+        settingsService.requestNext( { errors: res }, _callback, 'downloadFile' ); 
+      }
+    } catch(_err){
+      console.log( 'downloadFile' + ' Settings SERVICE ERROR', _err)
+    }
+  },
+
+  uploadFile: async (_payload, _callback=null) => {
+    let file = _payload.file;
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      let result = JSON.parse( reader.result );
+      result.versionDate = (new Date()).toUTCString();
+      ////// need to use an HTML validator here
+      //let scrubbedResult = cleanData( result );
+      settingsService.requestNext( addStorageHistory( result ), _callback, 'uploadFile' );
+    }, false );
+    reader.readAsText(file);
   },
 
   requestNext: (_res, _callback, _methodCalled) => {

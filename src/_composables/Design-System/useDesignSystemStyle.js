@@ -163,9 +163,9 @@ export function useDesignSystemStyle(_store, _frameId=null) {
   const rebuildCanvas = (_location, _code) => {
     //let doc = (new DOMParser()).parseFromString("<dummy/>", 'text/xml');
     let doc = document.createElement('div');
-    console.log('allHtml',allHtml);
+    //console.log('allHtml',allHtml);
     doc.innerHTML = allHtml;
-    console.log('doc__ ', doc);
+    //console.log('doc__ ', doc);
 
     let newId = String('dwc-' + uuidv4());
     let source = doc.querySelector(`#${selectedPanelId}`);

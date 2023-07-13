@@ -60,7 +60,6 @@ export default {
     };
 
     const setMenuOpen = (_val) => {
-      console.log('setMenuOpen =>',_val)
       store.dispatch("navigation/setMenuOpen", _val);
     }
 

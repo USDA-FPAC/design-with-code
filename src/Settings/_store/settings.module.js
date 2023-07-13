@@ -65,7 +65,30 @@ const actions = {
         commit('SET_HISTORY', result.data );
       }
     });
-  }
+  },
+
+  downloadFile( { commit, state, rootState }, _payload ){
+    //console.log('downloadFile()')
+    commit('SET_ERRORS', []);
+    settingsService.downloadFile(_payload, (result) => {
+      if(result.errors){
+        commit('SET_ERRORS', result.errors);
+      } 
+    });
+  },
+  
+  uploadFile( { commit, state, rootState }, _payload ){
+    //console.log('uploadFile()')
+    commit('SET_ERRORS', []);
+    settingsService.uploadFile(_payload, (result) => {
+      if(result.errors){
+        commit('SET_ERRORS', result.errors);
+      } else {
+        commit('SET_HISTORY', result.data );
+      }
+    });
+  } 
+
 
 };
 

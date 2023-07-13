@@ -57,7 +57,6 @@ const mutations = {
   },
 
   SET_SELECTED_MENU( _state, _payload ){
-    console.log('_payload',_payload)
     _state.selectedMenu = _payload;
   }
 
