@@ -64,7 +64,7 @@ export default {
     });
     
     onMounted(()=>{
-      //console.log('QuickFind > onMounted() props.DATA', props.DATA)
+      console.log('QuickFind > onMounted() props.DATA', props.DATA)
       if(props.DATA != undefined) quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
       else store.dispatch('design/setItems');
     })
