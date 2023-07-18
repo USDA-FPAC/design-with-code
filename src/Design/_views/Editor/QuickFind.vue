@@ -59,13 +59,13 @@ export default {
     }
 
     watch(componentsData, (curr)=>{
-      console.log('QuickFind watch() curr', curr)
-      quickFinderInit(curr, quickFindResultsId.value, selectItem)
+      //console.log('QuickFind watch() curr', curr)
+      if(curr.list != undefined) quickFinderInit(curr, quickFindResultsId.value, selectItem)
     });
     
     onMounted(()=>{
-      console.log('QuickFind > onMounted() props.DATA', props.DATA)
-      if(props.DATA != undefined) quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
+      //console.log('QuickFind > onMounted() props.DATA', props.DATA)
+      if(props.DATA.list != undefined) quickFinderInit(props.DATA, quickFindResultsId.value, selectItem)
       else store.dispatch('design/setItems');
     })
 

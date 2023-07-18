@@ -11,7 +11,7 @@ export function useQuickFind() {
   let clickedItemDelay = 3000;
 
   const quickFinderInit = ( _data, _resultsHolderId, _callback ) => {
-    console.log('quickFinderInit()',_data)
+    //console.log('quickFinderInit()',_data)
     window.QFCallback = _callback;
     data = _data;
     resultsHolder = document.getElementById( _resultsHolderId );
