@@ -25,6 +25,7 @@
               @emitOnUpdate="handleUpdateCanvas"
               @emitOnUndo="undo"
               @emitOnRedo="redo"
+              @emitOnSave="save"
             />
           
           </div>
@@ -56,6 +57,14 @@
       @emitModalAdditions="handleModalAdditions"
     >
     </component-modal>
+
+    <save-modal
+      :MODAL_ID="saveModalId"
+      CLASSES="fds-modal--top"
+      TITLE="Save Version"
+      @emitModalSave="handleSaveVersion"
+    >
+    </save-modal>
 </main>
 </template>
 
@@ -70,13 +79,15 @@ import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSyst
 const baseHeader = defineAsyncComponent(() => import("@/_partials/BaseHeader.vue"));
 const editor = defineAsyncComponent(() => import("@/Design/_views/Editor/Base.vue"));
 const componentModal = defineAsyncComponent(() => import('@/Design/_views/ComponentModal.vue'));
+const saveModal = defineAsyncComponent(() => import('@/Design/_views/SaveModal.vue'));
 
 
 export default {
   components: {
     baseHeader,
     editor,
-    componentModal
+    componentModal,
+    saveModal
   },
 
   setup(props, {emit}) {
@@ -102,11 +113,12 @@ export default {
     } = useModalControls();
     const componentModalId = ref( uuidv4() );
     setModalId(componentModalId.value);
+    const saveModalId = ref( uuidv4() );
+    setModalId(saveModalId.value);
     const methodName = ref();
     const dataObjHolder = ref({});
     const showProperties = ref([]);
 
-    
 
     const setSourceDoc = (_data) => {
       sourceDoc.value = _data.app;
@@ -143,6 +155,14 @@ export default {
       let source = updateSource({cmd:'redo'}, '')
       setVersion(source);
       //setSourceDoc(source);
+    }
+
+    const save = () => {
+      showModal(saveModalId.value);
+    }
+
+    const handleSaveVersion = (_name) => {
+      store.dispatch('settings/renameVersion', _name);
     }
 
     const handleUpdateCanvas = (_data) => {
@@ -198,12 +218,13 @@ export default {
         }
       })
       _data.obj = dataObj;
-      console.log('handleModalAdditions',_data);
+      //console.log('handleModalAdditions',_data);
       let source = updateSource( {cmd:'updateCanvas', data:''}, _data);
       
       setVersion( source );
       //setSourceDoc( updateSource( {cmd:'updateCanvas', data:''}, _data) );
     }
+    
 
     watch(frameSource, (curr) => {
       //console.log('Design.vue > watch()',curr);
@@ -234,8 +255,11 @@ export default {
       handleUpdateCanvas,
       undo,
       redo,
+      save,
+      saveModalId,
       componentModalId,
       handleModalAdditions,
+      handleSaveVersion,
       methodName,
       showProperties,
       currentVersionName,

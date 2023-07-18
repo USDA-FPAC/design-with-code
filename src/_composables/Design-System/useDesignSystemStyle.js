@@ -55,11 +55,11 @@ export function useDesignSystemStyle(_store, _frameId=null) {
 
   const handleComms = (_id, _frameId=null) => { 
     if(_id != 'handshake') {
-      console.log('panel selected :: ', _id)
+      //console.log('panel selected :: ', _id)
       _store.dispatch('design/setDeleteEnabled', true);
       selectedPanelId = _id;
     } else {
-      console.log('~~ logging Init Handshake ~~')
+      //console.log('~~ logging Init Handshake ~~')
     }
   }
 

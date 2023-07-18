@@ -7,7 +7,8 @@ const state = () =>({
   itemsList: [],
   deleteEnabled: false,
   undoEnabled: false,
-  redoEnabled: false
+  redoEnabled: false,
+  saveEnabled: true,
 });
   
 
@@ -17,7 +18,8 @@ const getters = {
   getItems: state => state.itemsList,
   getDeleteEnabled: state => state.deleteEnabled,
   getUndoEnabled: state => state.undoEnabled,
-  getRedoEnabled: state => state.redoEnabled
+  getRedoEnabled: state => state.redoEnabled,
+  getSaveEnabled: state => state.saveEnabled
 };
 
 const actions = {
@@ -44,6 +46,10 @@ const actions = {
 
   setRedoEnabled( { commit, state, rootState } , _payload){
     commit('SET_REDO_ENABLED', _payload);
+  },
+
+  setSaveEnabled( { commit, state, rootState } , _payload){
+    commit('SET_SAVE_ENABLED', _payload);
   }
 
 };
@@ -67,6 +73,10 @@ const mutations = {
 
   SET_REDO_ENABLED( state, payload){
     state.redoEnabled = payload;
+  },
+
+  SET_SAVE_ENABLED( state, payload){
+    state.saveEnabled = payload;
   },
 
 };

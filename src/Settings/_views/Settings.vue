@@ -40,7 +40,7 @@
               </span>
             </div>
 
-            <table class="fds-table fds-table--borderless">
+            <table class="fds-table fds-table--borderless dwc-table__first-highlight">
               <caption class="sr-only">Caption that is hidden visually, but read by screenreader</caption>
               <thead>
                 <tr>

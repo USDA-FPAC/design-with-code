@@ -41,6 +41,16 @@ const downloadToLocal = (_version) => {
   }
 }
 
+const renameCurrentStorageVersion = (_name) => {
+  let arr = getStorageHistory();
+  let cleanName = _name;
+  // check for duplicates or short names
+  if( arr.some(i => i.versionName == _name) )  cleanName = _name + '_' + new Date().getMilliseconds();
+  if( _name.length < 3) cleanName = _name + '-' + new Date().getMilliseconds();
+  arr[0].versionName = cleanName;
+  return setStorageHistory(arr);
+}
+
 
 export const settingsService = {
 
@@ -113,6 +123,17 @@ export const settingsService = {
       settingsService.requestNext( addStorageHistory( result ), _callback, 'uploadFile' );
     }, false );
     reader.readAsText(file);
+  },
+
+  renameCurrentVersion: async (_payload, _callback=null) => {
+    console.log('renameCurrentVersion()')
+    let history = renameCurrentStorageVersion(_payload);
+    try{
+      let res = history;
+      settingsService.requestNext( res, _callback, 'renameCurrentVersion' ); 
+    } catch(_err){
+      console.log( 'renameCurrentVersion' + ' Settings SERVICE ERROR', _err)
+    }
   },
 
   requestNext: (_res, _callback, _methodCalled) => {

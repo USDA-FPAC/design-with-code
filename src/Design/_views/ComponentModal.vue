@@ -4,20 +4,6 @@
       <div class="fds-modal__content">
         <button @click="hideModal(MODAL_ID)" class="fds-modal__close" data-behavior="close-modal" title="Close Modal" aria-label="Close Modal" type="button"></button>
         <h1 class="fds-modal__title">{{ TITLE }} - {{ NAME }}</h1>
-
-        <!-- <label class="fds-switch">
-          <input @change="toggleAddBelow()" type="checkbox" class="fds-switch__checkbox" :id="toggleAddBelowId" :name="toggleAddBelowId">
-          <span class="fds-switch__track"></span>
-        </label>
-        <label :for="toggleAddBelowId">Add Below</label>
-      </span>
-      <span class="fds-level fds-level--inline">
-        <label class="fds-switch">
-          <input @change="toggleAddRight()" type="checkbox" class="fds-switch__checkbox" :id="toggleAddRightId" :name="toggleAddRightId">
-          <span class="fds-switch__track"></span>
-        </label>
-        <label :for="toggleAddRightId">Add Right</label>
-      </span> -->
         
         <div v-if="useMe.placement" class="fds-level fds-m-t--m fds-m-b--s">
           
@@ -45,7 +31,7 @@
         </div>
 
         <div v-if="useMe.type" class="fds-field">
-          <label class="fds-field__label" :for="labelId">Type </label>
+          <label class="fds-field__label" :for="typeId">Type </label>
           <input v-model="type" class="fds-input fds-field__item" :id="typeId" :name="typeId" aria-required="true" type="text">
         </div>
 

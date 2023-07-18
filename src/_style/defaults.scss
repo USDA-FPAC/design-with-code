@@ -14,3 +14,8 @@ body {
     max-width: 480px;
   }
 }
+
+.dwc-table__first-highlight tr:first-child td {
+  background-color: $color-fds-secondary-100;
+  font-weight: bold;
+}

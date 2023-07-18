@@ -87,7 +87,19 @@ const actions = {
         commit('SET_HISTORY', result.data );
       }
     });
-  } 
+  },
+
+  renameVersion( { commit, state, rootState }, _payload ){
+    //console.log('saveVersionByName()')
+    commit('SET_ERRORS', []);
+    settingsService.renameCurrentVersion(_payload, (result) => {
+      if(result.errors){
+        commit('SET_ERRORS', result.errors);
+      } else {
+        commit('SET_HISTORY', result.data );
+      }
+    });
+  },
 
 
 };
