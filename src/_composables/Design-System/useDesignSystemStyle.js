@@ -1,21 +1,20 @@
 import { computed } from "vue";
 import { v4 as uuidv4 } from "uuid";
 import { useUtilities } from "@/_composables/useUtilities";
-import { useGrowlControls } from "../useGrowlControls";
 import { useTop } from '@/_composables/Design-System/page-areas/top';
 import { useBody } from "@/_composables/Design-System/page-areas/body";
 import { useTemplates } from "@/_composables/Design-System/layouts/useTemplates";
 import { useComponents } from "@/_composables/Design-System/useComponents";
 
 const { checkOnProd } = useUtilities();
-const { showErrorGrowl } = useGrowlControls();
+
 const projectLocation = checkOnProd() ? 'https://usda-fpac.github.io' : 'http://localhost:3000';
 const { getTop, getHeaderApp, getGlobalNav } = useTop(projectLocation);
 const { getMainTop, steppedTabs, headerArea, bodyInit, steppedControls, mainBottom, frameScripts } = useBody(projectLocation);
 const { getTemplate } = useTemplates(projectLocation);
 const { getComponent } = useComponents(projectLocation);
 
-export function useDesignSystemStyle(_store, _frameId=null) {
+export function useDesignSystemStyle(_store, _alertCallback, _frameId=null) {
   
   let allHtml = '';
   let frameId = _frameId;
@@ -55,11 +54,11 @@ export function useDesignSystemStyle(_store, _frameId=null) {
 
   const handleComms = (_id, _frameId=null) => { 
     if(_id != 'handshake') {
-      //console.log('panel selected :: ', _id)
+      console.log('panel selected :: ', _id)
       _store.dispatch('design/setDeleteEnabled', true);
       selectedPanelId = _id;
     } else {
-      //console.log('~~ logging Init Handshake ~~')
+      console.log('~~ logging Init Handshake ~~')
     }
   }
 
@@ -228,10 +227,17 @@ export function useDesignSystemStyle(_store, _frameId=null) {
 
   const showNotFoundError = (_err = null) => {
     let err = _err || '';
-    showErrorGrowl({
+    _alertCallback('alerts/addAlert',
+      {
+        title: 'Selection Error',
+        msg: 'Select an area or component on the Canvas. ' + err
+      }
+    );
+
+    /* showErrorGrowl({
       title: 'Selection Error',
       msg: 'Select an area or component on the Canvas. ' + err
-    });
+    }); */
   }
 
   const initCanvas = () => {

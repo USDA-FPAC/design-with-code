@@ -1,11 +1,9 @@
 
-import { useStore } from "vuex";
 import { useUtilities } from './useUtilities';
 import { v4 as uuidv4 } from 'uuid';
 
-export function useGrowlControls() {
-
-  const store = useStore();
+export function useGrowlControls( _cb ) {
+  let alertCallback = _cb;
   const { 
     hasClass,
     getAnimationString
@@ -16,6 +14,7 @@ export function useGrowlControls() {
   const originStr = 'data-growl-origin';
 
   const showGrowl = (_id) => {
+    console.log('showGrowl(_id)',_id)
     let growl = document.getElementById(_id);
 
     growl.setAttribute('aria-hidden', false);    
@@ -126,7 +125,7 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
-    store.dispatch('alerts/addAlert', alertObj);
+    alertCallback('alerts/addAlert', alertObj);
   }
 
   const showSuccessGrowl = (_obj) => {
@@ -140,7 +139,7 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
-    store.dispatch('alerts/addAlert', alertObj);
+    alertCallback('alerts/addAlert', alertObj);
   }
 
   const showErrorGrowl = (_obj) => {
@@ -155,8 +154,8 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
-    console.log('showErrorGrowl',alertObj)
-    store.dispatch('alerts/addAlert', alertObj);
+    //console.log('showErrorGrowl',alertObj)
+    alertCallback('alerts/addAlert', alertObj);
   }
 
   const showWarningGrowl = (_obj) => {
@@ -170,7 +169,7 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
-    store.dispatch('alerts/addAlert', alertObj);
+    alertCallback('alerts/addAlert', alertObj);
   }
 
   const showErrorModalGrowl = (_obj) => {
@@ -186,7 +185,7 @@ export function useGrowlControls() {
       useMessage: _obj.useMessage || 'true',
       message: _obj.msg
     }
-    store.dispatch('alerts/addAlert', alertObj);
+    alertCallback('alerts/addAlert', alertObj);
     showWhiteout();
   }
 

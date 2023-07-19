@@ -36,11 +36,16 @@ export default {
   },
   setup(props){
     const store = useStore();
+    const alertCallback = (_dispatch, _alertObj) => {
+      //store.dispatch('alerts/addAlert', _alertObj);
+      store.dispatch(_dispatch, _alertObj);
+    }
+
     const {
       showGrowl,
       hideGrowl,
       hideWhiteout
-    } = useGrowlControls();
+    } = useGrowlControls( alertCallback );
 
     const alerts = computed( ()=> {
       let data = store.getters['alerts/getAlerts'];
@@ -66,9 +71,11 @@ export default {
         setAlertsData(_alerts);
 
         alertsToAdd.forEach( (o) => { 
-          setTimeout( () => { 
+          showGrowl(o.id);
+
+          /* setTimeout( () => { 
             showGrowl(o.id)
-          }, 100 );
+          }, 250 ); */
         });
       // if the store array is less than the local array, an alert was removed
       } else if( alertsData.value.length > _alerts.length ){
@@ -80,7 +87,7 @@ export default {
         alertsToRemove.forEach( (o) => { 
           setTimeout( () => {
             hideGrowl( o.id, () => { setAlertsData(_alerts) } )
-          }, 100 );
+          }, 250 );
         });
 
       }

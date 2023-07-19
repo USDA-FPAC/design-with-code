@@ -73,6 +73,7 @@ import { defineAsyncComponent, ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useNavigation } from "@/_composables/useNavigation";
 import { useModalControls } from '@/_composables/useModalControls';
+import { useGrowlControls } from '@/_composables/useGrowlControls';
 import { v4 as uuidv4 } from "uuid";
 import { useDesignSystemStyle } from "@/_composables/Design-System/useDesignSystemStyle";
 
@@ -95,6 +96,13 @@ export default {
     const store = useStore();
     const { goto } = useNavigation();
 
+    const alertCallback = (_dispatch, _alertObj) => {
+      //store.dispatch('alerts/addAlert', _alertObj);
+      store.dispatch(_dispatch, _alertObj);
+    }
+
+    const { showErrorGrowl } = useGrowlControls( alertCallback );
+
     let frameSource = computed(()=>{
       let data = store.getters['settings/getCurrentVersion'];
       if(data!=null) return data;
@@ -105,7 +113,7 @@ export default {
     const editorsId = ref(uuidv4());
     const canvasId = ref(uuidv4());
     const iFrameId= ref(uuidv4());
-    const { updateSource, listenToFrame, setHtmlSource } = useDesignSystemStyle(store, sourceDoc, String(iFrameId.value));
+    const { updateSource, listenToFrame, setHtmlSource } = useDesignSystemStyle(store, showErrorGrowl, String(iFrameId.value));
     const {
       setModalId,
       showModal,
